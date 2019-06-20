@@ -1,5 +1,6 @@
 package com.uco.pilae.pilae.service;
 import com.uco.pilae.pilae.entity.*;
+import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
 import com.uco.pilae.pilae.model.Equipo;
 import com.uco.pilae.pilae.model.Jugador;
 import com.uco.pilae.pilae.model.Torneo;
@@ -32,12 +33,14 @@ public class TorneoService {
 
     public List listTorneos(){
         Iterable torneo = torneoRepository.findAll();
-        return listConvert(torneo);
+        List list= new ArrayList();
+        torneo.forEach(list::add);
+        return  list;
     }
 
-    public List listEquipos(){
-        Iterable equipo = equipoRepository.findAll();
-        return listConvert(equipo);
+    public List<Torneo> listEquipos(){
+        Iterable torneo = equipoRepository.findAll();
+        return listConvert(torneo);
     }
     public List listPartidos(){
         Iterable partidos = partidoRepository.findAll();
@@ -52,26 +55,6 @@ public class TorneoService {
         List list = new ArrayList();
         listToConvert.forEach(list::add);
         return list;
-    }
-
-    public void update(TorneoEntity torneoAsociado, Torneo torneo) {
-        torneoAsociado.setNombre(torneo.getNombre());
-        torneoAsociado.setDescripcion(torneo.getDescripcion());
-        torneoRepository.save(torneoAsociado);
-    }
-
-    public void updateEquipo(EquipoEntity equipoAsociado, Equipo equipo) {
-        equipoAsociado.setNombre(equipo.getNombre());
-        equipoAsociado.setGenero(equipo.getGenero());
-        equipoAsociado.setLocacion(equipo.getLocacion());
-        equipoRepository.save(equipoAsociado);
-    }
-
-    public void updateJugador(JugadorEntity jugadorAsociado, Jugador jugador) {
-        jugadorAsociado.setNombre(jugador.getNombre());
-        jugadorAsociado.setFechaNacimiento(jugador.getFechaNacimiento());
-        jugadorAsociado.setIdentificacion(jugador.getIdentificacion());
-        jugadorRepository.save(jugadorAsociado);
     }
 
     public void saveTorneo(Torneo torneo) {
@@ -101,6 +84,26 @@ public class TorneoService {
         posicionEntity.setFkTorneo(equipoEntity.getFkTorneo());
         posicionEntity.setFkEquipo(equipoEntity);
         posicionRepository.save(posicionEntity);
+    }
+
+    public void update(TorneoEntity torneoAsociado, Torneo torneo) {
+        torneoAsociado.setNombre(torneo.getNombre());
+        torneoAsociado.setDescripcion(torneo.getDescripcion());
+        torneoRepository.save(torneoAsociado);
+    }
+
+    public void updateEquipo(EquipoEntity equipoAsociado, Equipo equipo) {
+        equipoAsociado.setNombre(equipo.getNombre());
+        equipoAsociado.setGenero(equipo.getGenero());
+        equipoAsociado.setLocacion(equipo.getLocacion());
+        equipoRepository.save(equipoAsociado);
+    }
+
+    public void updateJugador(JugadorEntity jugadorAsociado, Jugador jugador) {
+        jugadorAsociado.setNombre(jugador.getNombre());
+        jugadorAsociado.setFechaNacimiento(jugador.getFechaNacimiento());
+        jugadorAsociado.setIdentificacion(jugador.getIdentificacion());
+        jugadorRepository.save(jugadorAsociado);
     }
 
     public List<PartidoEntity> fixture(List<EquipoEntity> equiposFixture, TorneoEntity id){
