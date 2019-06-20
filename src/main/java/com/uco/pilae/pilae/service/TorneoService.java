@@ -1,5 +1,6 @@
 package com.uco.pilae.pilae.service;
 import com.uco.pilae.pilae.entity.*;
+import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
 import com.uco.pilae.pilae.model.Equipo;
 import com.uco.pilae.pilae.model.Jugador;
 import com.uco.pilae.pilae.model.Torneo;
@@ -149,6 +150,27 @@ public class TorneoService {
         jugadorEntity.setNombre(jugador.getNombre());
         jugadorEntity.setFkEquipo(equipoEntity);
         jugadorRepository.save(jugadorEntity);
+    }
+
+
+    public void update(TorneoEntity torneoAsociado, Torneo torneo) {
+        torneoAsociado.setNombre(torneo.getNombre());
+        torneoAsociado.setDescripcion(torneo.getDescripcion());
+        torneoRepository.save(torneoAsociado);
+    }
+
+    public void updateEquipo(EquipoEntity equipoAsociado, Equipo equipo) {
+        equipoAsociado.setNombre(equipo.getNombre());
+        equipoAsociado.setGenero(equipo.getGenero());
+        equipoAsociado.setLocacion(equipo.getLocacion());
+        equipoRepository.save(equipoAsociado);
+    }
+
+    public void updateJugador(JugadorEntity jugadorAsociado, Jugador jugador) {
+        jugadorAsociado.setNombre(jugador.getNombre());
+        jugadorAsociado.setFechaNacimiento(jugador.getFechaNacimiento());
+        jugadorAsociado.setIdentificacion(jugador.getIdentificacion());
+        jugadorRepository.save(jugadorAsociado);
     }
 }
 

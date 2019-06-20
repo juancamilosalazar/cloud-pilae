@@ -41,45 +41,41 @@ public class TorneoController {
     private JugarPartido jugarPartido;
 
     @PostMapping("insertar")
-    public ResponseEntity insertar(@RequestBody Torneo torneo){
+    public void insertar(@RequestBody Torneo torneo){
         torneoService.save(torneo);
-        List torneos = torneoService.listEquipos();
-        return new ResponseEntity(torneos, HttpStatus.OK);
     }
     @PostMapping("insertar/equipo/{id}")
-    public ResponseEntity insertarEquipo(@RequestBody Equipo equipo, @PathVariable(value = "id") Long id){
-        TorneoEntity torneo= torneoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));
-        torneoService.saveEquipo(equipo,torneo);
-        List torneos = torneoService.listEquipos();
-        return new ResponseEntity(torneos, HttpStatus.OK);
+    public void insertarEquipo(@RequestBody Equipo equipo, @PathVariable(value = "id") Long id){
+        torneoService.saveEquipo(equipo,torneoAsociado(id));
     }
     @PostMapping("insertar/jugador/{id}")
-    public ResponseEntity insertarJugador(@RequestBody Jugador jugador, @PathVariable(value = "id") Long id){
-        EquipoEntity equipoEntity = equipoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));;
-        torneoService.saveJugador(jugador,equipoEntity);
-        List torneos = torneoService.listEquipos();
-        return new ResponseEntity(torneos, HttpStatus.OK);
+    public void insertarJugador(@RequestBody Jugador jugador, @PathVariable(value = "id") Long id){
+        torneoService.saveJugador(jugador,equipoAsociado(id));
     }
+
     @PostMapping("insertar/torneo")
-    public ResponseEntity insertarTorneo(@RequestBody Torneo torneo){
+    public void insertarTorneo(@RequestBody Torneo torneo){
         torneoService.saveTorneo(torneo);
-        List torneos = torneoService.listEquipos();
-        return new ResponseEntity(torneos, HttpStatus.OK);
     }
-    @RequestMapping(value = "delete/torneo/{id}", method = RequestMethod.DELETE)
-    public void deleteTorneo(@PathVariable("id") Long id) { torneoRepository.deleteById(id);}
-    @RequestMapping(value = "delete/equipo/{id}", method = RequestMethod.DELETE)
+
+    @DeleteMapping(value = "delete/torneo/{id}")
+    public void deleteTorneo(@PathVariable("id") Long id) {
+        torneoRepository.deleteById(id);
+    }
+
+    @DeleteMapping(value = "delete/equipo/{id}")
     public void deleteEquipo(@PathVariable("id") Long id) {
         equipoRepository.deleteById(id);
     }
-    @RequestMapping(value = "delete/jugador/{id}", method = RequestMethod.DELETE)
+
+    @DeleteMapping(value = "delete/jugador/{id}")
     public void deleteJugador(@PathVariable("id") Long id) {
         jugadorRepository.deleteById(id);
     }
 
     @GetMapping("save/fixture/{id}")
     public ResponseEntity saveFixture(@PathVariable(value = "id") Long id) {
-        TorneoEntity torneo= torneoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));
+        TorneoEntity torneo= torneoAsociado(id);
         partidoRepository.deleteByfkTorneo(torneo);
         List equipos = equipoRepository.findByFkTorneo(torneo);
         List fixture = torneoService.fixture(equipos,torneo);
@@ -87,76 +83,59 @@ public class TorneoController {
     }
     @PutMapping("update/torneo/{id}")
     public void upadteTorneo(@RequestBody Torneo torneo, @PathVariable(value = "id") Long id){
-        TorneoEntity torneoEntity= torneoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("torneo_tbl","torneo_tbl",id));
-        torneoEntity.setNombre(torneo.getNombre());
-        torneoEntity.setDescripcion(torneo.getDescripcion());
-        torneoRepository.save(torneoEntity);
+        torneoService.update(torneoAsociado(id),torneo);
     }
+
     @PutMapping("update/equipo/{id}")
     public void updateEuipo(@RequestBody Equipo equipo, @PathVariable(value = "id") Long id){
-        EquipoEntity equipoEntity= equipoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("torneo_tbl","torneo_tbl",id));
-        equipoEntity.setNombre(equipo.getNombre());
-        equipoEntity.setGenero(equipo.getGenero());
-        equipoEntity.setLocacion(equipo.getLocacion());
-        equipoRepository.save(equipoEntity);
+        torneoService.updateEquipo(equipoAsociado(id),equipo);
     }
     @PutMapping("update/jugador/{id}")
     public void updateJugador(@RequestBody Jugador jugador, @PathVariable(value = "id") Long id){
-        JugadorEntity jugadorEntity= jugadorRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("torneo_tbl","torneo_tbl",id));
-        jugadorEntity.setNombre(jugador.getNombre());
-        jugadorEntity.setFechaNacimiento(jugador.getFechaNacimiento());
-        jugadorEntity.setIdentificacion(jugador.getIdentificacion());
-        jugadorRepository.save(jugadorEntity);
+        torneoService.updateJugador(jugadorAsociado(id),jugador);
     }
     @PostMapping("jugar/{id}")
-    public ResponseEntity jugarPartido(@RequestBody MarcadorEntity marcador, @PathVariable(value = "id") Long id){
-        PartidoEntity partido= partidoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));
-        jugarPartido.jugarPartido(partido,marcador.getEquipoLocalMrc(),marcador.getEquipoVisitanteMrc());
-        return new ResponseEntity(marcadorRepository.findAll(),HttpStatus.OK);
+    public void jugarPartido(@RequestBody MarcadorEntity marcador, @PathVariable(value = "id") Long id){
+        jugarPartido.jugarPartido(partidoAsociado(id),marcador.getEquipoLocalMrc(),marcador.getEquipoVisitanteMrc());
     }
+
     @GetMapping("fixture/{id}")
     public ResponseEntity fixture(@PathVariable(value = "id") Long id) {
-        TorneoEntity torneo= torneoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));
-        List equipos = partidoRepository.findByFkTorneo(torneo).stream().sorted(Comparator.comparing(PartidoEntity::getCodigo)).collect(Collectors.toList());
+        List equipos = partidoRepository.findByFkTorneo(torneoAsociado(id)).stream().sorted(Comparator.comparing(PartidoEntity::getCodigo)).collect(Collectors.toList());
         return new ResponseEntity(equipos, HttpStatus.OK);
     }
     @GetMapping("marcador/{id}")
     public ResponseEntity marcador(@PathVariable(value = "id") Long id) {
-        PartidoEntity torneo= partidoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));
-        MarcadorEntity marcador = marcadorRepository.findByFkPartido(torneo);
+        MarcadorEntity marcador = marcadorRepository.findByFkPartido(partidoAsociado(id));
         return new ResponseEntity(marcador, HttpStatus.OK);
     }
+
     @GetMapping("jugadores/{id}")
     public ResponseEntity jugadorPorEquipo(@PathVariable(value = "id") Long id) {
-        EquipoEntity equipo= equipoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));
-        List equipos = jugadorRepository.findByFkEquipo(equipo);
-        return new ResponseEntity(equipos, HttpStatus.OK);
+        List jugadores = jugadorRepository.findByFkEquipo(equipoAsociado(id));
+        return new ResponseEntity(jugadores, HttpStatus.OK);
     }
+
     @GetMapping("listar/equipos")
     public ResponseEntity equipos(){
-        List torneos = torneoService.listEquipos();
-        return new ResponseEntity(torneos, HttpStatus.OK);
+        return new ResponseEntity(torneoService.listEquipos(), HttpStatus.OK);
     }
+
     @GetMapping("listar/posiciones/{id}")
     public ResponseEntity posiciones(@PathVariable(value = "id") Long id){
-        TorneoEntity torneoEntity = torneoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));;
-        List ordenada = jugarPartido.ordenarPosiciones(torneoEntity);
-        return new ResponseEntity(ordenada, HttpStatus.OK);
+        return new ResponseEntity(jugarPartido.ordenarPosiciones(torneoAsociado(id)), HttpStatus.OK);
     }
     @GetMapping("listar/partidos")
     public ResponseEntity partidos(){
-        List torneos = torneoService.listPartidos();
-        return new ResponseEntity(torneos, HttpStatus.OK);
+        return new ResponseEntity(torneoService.listPartidos(), HttpStatus.OK);
     }
     @GetMapping("listar/jugadores")
     public ResponseEntity jugadores(){
-        List jugadores = torneoService.listJugadores();
-        return new ResponseEntity(jugadores,HttpStatus.OK);
+        return new ResponseEntity(torneoService.listJugadores(),HttpStatus.OK);
     }
-    @RequestMapping(value="listar/torneos", method = RequestMethod.GET)
+    @GetMapping(value="listar/torneos")
     public ResponseEntity listaTransactions(){
-        List torneos = torneoService.listTorneos();
-        return new ResponseEntity(torneos, HttpStatus.OK);
+        return new ResponseEntity(torneoService.listTorneos(), HttpStatus.OK);
     }
 
     private TorneoEntity torneoAsociado(Long id) {
