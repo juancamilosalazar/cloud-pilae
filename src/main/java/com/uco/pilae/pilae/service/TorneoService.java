@@ -123,7 +123,6 @@ public class TorneoService {
         equipoEntity.setLocacion(equipo.getLocacion());
         equipoEntity.setGenero(equipo.getGenero());
         equipoRepository.save(equipoEntity);
-
         posicionEntity.setFkEquipo(equipoEntity);
         initPartido(posicionEntity,equipoEntity.getFkTorneo());
         posicionRepository.save(posicionEntity);
