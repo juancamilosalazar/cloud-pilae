@@ -40,10 +40,6 @@ public class TorneoController {
     @Autowired
     private JugarPartido jugarPartido;
 
-    @PostMapping("insertar")
-    public void insertar(@RequestBody Torneo torneo){
-        torneoService.save(torneo);
-    }
     @PostMapping("insertar/equipo/{id}")
     public void insertarEquipo(@RequestBody Equipo equipo, @PathVariable(value = "id") Long id){
         torneoService.saveEquipo(equipo,torneoAsociado(id));
