@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 //, consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE
 @Controller
 @RequestMapping(path = "/pilae")
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
 public class TorneoController {
 
     @Autowired

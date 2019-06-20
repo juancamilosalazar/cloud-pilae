@@ -1,0 +1,47 @@
+server:
+  port: 9093
+spring:
+  application:
+    name: pilae-service
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://@ec2-54-83-1-101.compute-1.amazonaws.com:5432/d4i46i1a76b73k?user=wjtyvwvaefahuq&password=61a66c4b254ff71ee5258d54378bc5e84ebfd2288960ee906d00af8f0e422c93&sslmode=require}
+    driver-class-name: org.postgresql.Driver
+    platform: postgres
+  jpa:
+    database: POSTGRESQL
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 20
+          lob:
+            non_contextual_creation: true
+          cache:
+            use_query_cache: false
+            use_second_level_cache: false
+            use_structured_entries: false
+            use_minimal_puts: false
+        temp:
+          use_jdbc_metadata_defaults: false
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://user:password@localhost:5000}/eureka/
+  instance:
+    hostname: ${DOMAIN_NAME:localhost}
+    nonSecurePort: 80
+    password: ${USER_PASSWORD:password}
+security:
+  user:
+    password: ${eureka.password}
+
+
