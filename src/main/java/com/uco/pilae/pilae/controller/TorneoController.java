@@ -159,4 +159,17 @@ public class TorneoController {
         return new ResponseEntity(torneos, HttpStatus.OK);
     }
 
+    private TorneoEntity torneoAsociado(Long id) {
+        return  torneoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));
+    }
+    private EquipoEntity equipoAsociado(Long id) {
+        return equipoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));
+    }
+    private PartidoEntity partidoAsociado(Long id) {
+        return partidoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));
+    }
+    private JugadorEntity jugadorAsociado(Long id) {
+        return jugadorRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("torneo_tbl","torneo_tbl",id));
+    }
+
 }
