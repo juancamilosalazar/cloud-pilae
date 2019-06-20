@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 //, consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE
 @Controller
-@RequestMapping(path = "/pilae")
+@RequestMapping(path = "/pilae/torneo")
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
 public class TorneoController {
 
@@ -40,10 +40,6 @@ public class TorneoController {
     @Autowired
     private JugarPartido jugarPartido;
 
-    @PostMapping("insertar/equipo/{id}")
-    public void insertarEquipo(@RequestBody Equipo equipo, @PathVariable(value = "id") Long id){
-        torneoService.saveEquipo(equipo,torneoAsociado(id));
-    }
     @PostMapping("insertar/jugador/{id}")
     public void insertarJugador(@RequestBody Jugador jugador, @PathVariable(value = "id") Long id){
         torneoService.saveJugador(jugador,equipoAsociado(id));
@@ -59,10 +55,6 @@ public class TorneoController {
         torneoRepository.deleteById(id);
     }
 
-    @DeleteMapping(value = "delete/equipo/{id}")
-    public void deleteEquipo(@PathVariable("id") Long id) {
-        equipoRepository.deleteById(id);
-    }
 
     @DeleteMapping(value = "delete/jugador/{id}")
     public void deleteJugador(@PathVariable("id") Long id) {
@@ -82,10 +74,6 @@ public class TorneoController {
         torneoService.update(torneoAsociado(id),torneo);
     }
 
-    @PutMapping("update/equipo/{id}")
-    public void updateEuipo(@RequestBody Equipo equipo, @PathVariable(value = "id") Long id){
-        torneoService.updateEquipo(equipoAsociado(id),equipo);
-    }
     @PutMapping("update/jugador/{id}")
     public void updateJugador(@RequestBody Jugador jugador, @PathVariable(value = "id") Long id){
         torneoService.updateJugador(jugadorAsociado(id),jugador);
@@ -112,10 +100,6 @@ public class TorneoController {
         return new ResponseEntity(jugadores, HttpStatus.OK);
     }
 
-    @GetMapping("listar/equipos")
-    public ResponseEntity equipos(){
-        return new ResponseEntity(torneoService.listEquipos(), HttpStatus.OK);
-    }
 
     @GetMapping("listar/posiciones/{id}")
     public ResponseEntity posiciones(@PathVariable(value = "id") Long id){
