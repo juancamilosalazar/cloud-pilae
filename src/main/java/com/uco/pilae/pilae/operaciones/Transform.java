@@ -6,7 +6,9 @@ import com.uco.pilae.pilae.entity.TorneoEntity;
 import com.uco.pilae.pilae.model.Equipo;
 import com.uco.pilae.pilae.model.Jugador;
 import com.uco.pilae.pilae.model.Torneo;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Transform {
 
     public  EquipoEntity transformToEquipoEntity(Equipo equipo, TorneoEntity torneo) {

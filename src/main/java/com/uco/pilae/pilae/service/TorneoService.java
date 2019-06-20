@@ -33,12 +33,10 @@ public class TorneoService {
 
     public List listTorneos(){
         Iterable torneo = torneoRepository.findAll();
-        List list= new ArrayList();
-        torneo.forEach(list::add);
-        return  list;
+        return listConvert(torneo);
     }
 
-    public List<Torneo> listEquipos(){
+    public List listEquipos(){
         Iterable torneo = equipoRepository.findAll();
         return listConvert(torneo);
     }
