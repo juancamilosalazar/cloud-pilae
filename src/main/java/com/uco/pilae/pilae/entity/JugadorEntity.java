@@ -1,10 +1,18 @@
 package com.uco.pilae.pilae.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "jugador_tbl")
 public class JugadorEntity {
@@ -25,43 +33,4 @@ public class JugadorEntity {
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private EquipoEntity fkEquipo;
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getIdentificacion() {
-        return identificacion;
-    }
-
-    public void setIdentificacion(String identificacion) {
-        this.identificacion = identificacion;
-    }
-
-    public LocalDate getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public EquipoEntity getFkEquipo() {
-        return fkEquipo;
-    }
-
-    public void setFkEquipo(EquipoEntity fkEquipo) {
-        this.fkEquipo = fkEquipo;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

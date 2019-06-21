@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 
 //, consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE
-@Controller
+@RestController
 @RequestMapping(path = "/pilae/torneo")
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
 public class TorneoController {
@@ -40,10 +40,7 @@ public class TorneoController {
     @Autowired
     private JugarPartido jugarPartido;
 
-    @PostMapping("insertar/jugador/{id}")
-    public void insertarJugador(@RequestBody Jugador jugador, @PathVariable(value = "id") Long id){
-        torneoService.saveJugador(jugador,equipoAsociado(id));
-    }
+
 
     @PostMapping("insertar/torneo")
     public void insertarTorneo(@RequestBody Torneo torneo){
@@ -55,11 +52,6 @@ public class TorneoController {
         torneoRepository.deleteById(id);
     }
 
-
-    @DeleteMapping(value = "delete/jugador/{id}")
-    public void deleteJugador(@PathVariable("id") Long id) {
-        jugadorRepository.deleteById(id);
-    }
 
     @GetMapping("save/fixture/{id}")
     public ResponseEntity saveFixture(@PathVariable(value = "id") Long id) {
@@ -74,10 +66,6 @@ public class TorneoController {
         torneoService.update(torneoAsociado(id),torneo);
     }
 
-    @PutMapping("update/jugador/{id}")
-    public void updateJugador(@RequestBody Jugador jugador, @PathVariable(value = "id") Long id){
-        torneoService.updateJugador(jugadorAsociado(id),jugador);
-    }
     @PostMapping("jugar/{id}")
     public void jugarPartido(@RequestBody MarcadorEntity marcador, @PathVariable(value = "id") Long id){
         jugarPartido.jugarPartido(partidoAsociado(id),marcador.getEquipoLocalMrc(),marcador.getEquipoVisitanteMrc());
@@ -109,10 +97,7 @@ public class TorneoController {
     public ResponseEntity partidos(){
         return new ResponseEntity(torneoService.listPartidos(), HttpStatus.OK);
     }
-    @GetMapping("listar/jugadores")
-    public ResponseEntity jugadores(){
-        return new ResponseEntity(torneoService.listJugadores(),HttpStatus.OK);
-    }
+
     @GetMapping(value="listar/torneos")
     public ResponseEntity listaTransactions(){
         return new ResponseEntity(torneoService.listTorneos(), HttpStatus.OK);

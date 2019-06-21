@@ -15,5 +15,6 @@ import java.util.List;
 public interface EquipoRepository extends JpaRepository<EquipoEntity,Long> {
     List<EquipoEntity>  findByFkTorneo(TorneoEntity fkTorneo );
 
+    List<EquipoEntity> findAllByFkTorneoCodigo(final Long codigo);
 }
 

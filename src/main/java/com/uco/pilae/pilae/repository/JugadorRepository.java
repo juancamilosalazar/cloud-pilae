@@ -14,4 +14,5 @@ import java.util.List;
 @Repository
 public interface JugadorRepository extends JpaRepository<JugadorEntity,Long> {
     List<JugadorEntity> findByFkEquipo(EquipoEntity fkEquipo );
+    List<JugadorEntity> findAllByFkEquipoCodigo(final Long codigo);
 }
