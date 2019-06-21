@@ -1,9 +1,17 @@
 package com.uco.pilae.pilae.model;
 
+import lombok.*;
+
 import java.time.LocalDate;
 
-public class Partido {
-    private  Integer codigo;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, doNotUseGetters = true)
+public class Partido implements java.io.Serializable {
+    private  Long codigo;
     private Equipo equipoLocal;
     private Equipo equipoVisitante;
     private String ronda;
@@ -12,63 +20,4 @@ public class Partido {
     private String idaVuelta;
     private String estadoPartido;
 
-    public Equipo getEquipoLocal() {
-        return equipoLocal;
-    }
-
-    public void setEquipoLocal(Equipo equipoLocal) {
-        this.equipoLocal = equipoLocal;
-    }
-
-    public Equipo getEquipoVisitante() {
-        return equipoVisitante;
-    }
-
-    public void setEquipoVisitante(Equipo equipoVisitante) {
-        this.equipoVisitante = equipoVisitante;
-    }
-
-    public String getRonda() {
-        return ronda;
-    }
-
-    public void setRonda(String ronda) {
-        this.ronda = ronda;
-    }
-
-    public LocalDate getFechaDelPartido() {
-        return fechaDelPartido;
-    }
-
-    public void setFechaDelPartido(LocalDate fechaDelPartido) {
-        this.fechaDelPartido = fechaDelPartido;
-    }
-
-    public Torneo getTorneo() {
-        return torneo;
-    }
-
-    public void setTorneo(Torneo torneo) {
-        this.torneo = torneo;
-    }
-
-    public String getIdaVuelta() {
-        return idaVuelta;
-    }
-
-    public void setIdaVuelta(String idaVuelta) {
-        this.idaVuelta = idaVuelta;
-    }
-
-    public String getEstadoPartido() {
-        return estadoPartido;
-    }
-
-    public void setEstadoPartido(String estadoPartido) {
-        this.estadoPartido = estadoPartido;
-    }
-
-    public Integer getCodigo() {
-        return codigo;
-    }
 }

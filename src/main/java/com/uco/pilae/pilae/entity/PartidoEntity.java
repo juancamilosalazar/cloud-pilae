@@ -1,9 +1,17 @@
 package com.uco.pilae.pilae.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "partido_tbl")
 public class PartidoEntity {
@@ -33,64 +41,4 @@ public class PartidoEntity {
     @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     private TorneoEntity fkTorneo;
 
-
-    public LocalDate getFechaDelpartido() {
-        return fechaDelpartido;
-    }
-
-    public void setFechaDelpartido(LocalDate fechaDelpartido) {
-        this.fechaDelpartido = fechaDelpartido;
-    }
-
-    public String getRonda() {
-        return ronda;
-    }
-
-    public void setRonda(String ronda) {
-        this.ronda = ronda;
-    }
-
-    public EquipoEntity getFkEquipoLocal() {
-        return fkEquipoLocal;
-    }
-
-    public void setFkEquipoLocal(EquipoEntity fkEquipoLocal) {
-        this.fkEquipoLocal = fkEquipoLocal;
-    }
-
-    public EquipoEntity getFkEquipoVisitante() {
-        return fkEquipoVisitante;
-    }
-
-    public void setFkEquipoVisitante(EquipoEntity fkEquipoVisitante) {
-        this.fkEquipoVisitante = fkEquipoVisitante;
-    }
-
-    public TorneoEntity getFkTorneo() {
-        return fkTorneo;
-    }
-
-    public void setFkTorneo(TorneoEntity fkTorneo) {
-        this.fkTorneo = fkTorneo;
-    }
-
-    public String getIdaVuelta() {
-        return idaVuelta;
-    }
-
-    public void setIdaVuelta(String idaVuelta) {
-        this.idaVuelta = idaVuelta;
-    }
-
-    public String getEstadoPartido() {
-        return estadoPartido;
-    }
-
-    public void setEstadoPartido(String estadoPartido) {
-        this.estadoPartido = estadoPartido;
-    }
-
-    public Long getCodigo() {
-        return codigo;
-    }
 }

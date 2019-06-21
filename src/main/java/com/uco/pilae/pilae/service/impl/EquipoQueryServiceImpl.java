@@ -1,8 +1,10 @@
 package com.uco.pilae.pilae.service.impl;
 
 import com.uco.pilae.pilae.entity.EquipoEntity;
+import com.uco.pilae.pilae.entity.PosicionEntity;
 import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
 import com.uco.pilae.pilae.repository.EquipoRepository;
+import com.uco.pilae.pilae.repository.PosicionRepository;
 import com.uco.pilae.pilae.repository.TorneoRepository;
 import com.uco.pilae.pilae.service.EquipoQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,12 @@ public class EquipoQueryServiceImpl implements EquipoQueryService {
 
     private final EquipoRepository repository;
     private final TorneoRepository torneoRepository;
-
+    private final PosicionRepository posicionRepository;
     @Autowired
-    public EquipoQueryServiceImpl(final EquipoRepository repository, final TorneoRepository torneoRepository) {
+    public EquipoQueryServiceImpl(final EquipoRepository repository, final TorneoRepository torneoRepository,final PosicionRepository posicionRepository) {
         this.repository = repository;
         this.torneoRepository = torneoRepository;
+        this.posicionRepository = posicionRepository;
     }
 
     @Override
@@ -48,10 +51,28 @@ public class EquipoQueryServiceImpl implements EquipoQueryService {
         return torneoRepository.findById(torneoId)
                 .map(torneoEntity -> {
                     newEntity.setFkTorneo(torneoEntity);
+                    initPartido(newEntity);
                     return newEntity;
                 })
                 .map(repository::saveAndFlush)
                 .orElseThrow(() -> new ResourceNotFoundException("torneo_tbl", "torneo_tbl", torneoId));
+    }
+
+
+    @Override
+    public void initPartido(EquipoEntity equipoEntity) {
+            PosicionEntity posicionEntity = new PosicionEntity();
+            posicionEntity.setPuntos(0);
+            posicionEntity.setPartidosEmpatados(0);
+            posicionEntity.setPartidosPerdidos(0);
+            posicionEntity.setPartidosGanados(0);
+            posicionEntity.setPartidosJugados(0);
+            posicionEntity.setGolesDiferencia(0);
+            posicionEntity.setGolesFavor(0);
+            posicionEntity.setGolesContra(0);
+            posicionEntity.setFkTorneo(equipoEntity.getFkTorneo());
+            posicionEntity.setFkEquipo(equipoEntity);
+            posicionRepository.save(posicionEntity);
     }
 
     @Override

@@ -10,5 +10,4 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface TorneoRepository extends JpaRepository<TorneoEntity,Long> {
 
-
 }

@@ -53,14 +53,6 @@ public class TorneoController {
     }
 
 
-    @GetMapping("save/fixture/{id}")
-    public ResponseEntity saveFixture(@PathVariable(value = "id") Long id) {
-        TorneoEntity torneo= torneoAsociado(id);
-        partidoRepository.deleteByfkTorneo(torneo);
-        List equipos = equipoRepository.findByFkTorneo(torneo);
-        List fixture = torneoService.fixture(equipos,torneo);
-        return new ResponseEntity(fixture, HttpStatus.OK);
-    }
     @PutMapping("update/torneo/{id}")
     public void upadteTorneo(@RequestBody Torneo torneo, @PathVariable(value = "id") Long id){
         torneoService.update(torneoAsociado(id),torneo);
@@ -71,31 +63,16 @@ public class TorneoController {
         jugarPartido.jugarPartido(partidoAsociado(id),marcador.getEquipoLocalMrc(),marcador.getEquipoVisitanteMrc());
     }
 
-    @GetMapping("fixture/{id}")
-    public ResponseEntity fixture(@PathVariable(value = "id") Long id) {
-        List equipos = partidoRepository.findByFkTorneo(torneoAsociado(id)).stream().sorted(Comparator.comparing(PartidoEntity::getCodigo)).collect(Collectors.toList());
-        return new ResponseEntity(equipos, HttpStatus.OK);
-    }
     @GetMapping("marcador/{id}")
     public ResponseEntity marcador(@PathVariable(value = "id") Long id) {
         MarcadorEntity marcador = marcadorRepository.findByFkPartido(partidoAsociado(id));
         return new ResponseEntity(marcador, HttpStatus.OK);
     }
 
-    @GetMapping("jugadores/{id}")
-    public ResponseEntity jugadorPorEquipo(@PathVariable(value = "id") Long id) {
-        List jugadores = jugadorRepository.findByFkEquipo(equipoAsociado(id));
-        return new ResponseEntity(jugadores, HttpStatus.OK);
-    }
-
 
     @GetMapping("listar/posiciones/{id}")
     public ResponseEntity posiciones(@PathVariable(value = "id") Long id){
         return new ResponseEntity(jugarPartido.ordenarPosiciones(torneoAsociado(id)), HttpStatus.OK);
-    }
-    @GetMapping("listar/partidos")
-    public ResponseEntity partidos(){
-        return new ResponseEntity(torneoService.listPartidos(), HttpStatus.OK);
     }
 
     @GetMapping(value="listar/torneos")
@@ -106,14 +83,8 @@ public class TorneoController {
     private TorneoEntity torneoAsociado(Long id) {
         return  torneoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));
     }
-    private EquipoEntity equipoAsociado(Long id) {
-        return equipoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));
-    }
     private PartidoEntity partidoAsociado(Long id) {
         return partidoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));
-    }
-    private JugadorEntity jugadorAsociado(Long id) {
-        return jugadorRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("torneo_tbl","torneo_tbl",id));
     }
 
 }

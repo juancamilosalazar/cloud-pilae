@@ -6,6 +6,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, doNotUseGetters = true)
 public class Equipo implements java.io.Serializable {
 
