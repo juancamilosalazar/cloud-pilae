@@ -1,15 +1,9 @@
 package com.uco.pilae.pilae;
 
 import com.uco.pilae.pilae.entity.*;
-import com.uco.pilae.pilae.model.Posicion;
 import com.uco.pilae.pilae.operaciones.JugarPartido;
-import com.uco.pilae.pilae.service.TorneoService;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class OperacionesTest {
     @Test

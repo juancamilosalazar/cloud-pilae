@@ -25,12 +25,11 @@ public class JugarPartido {
     @Autowired
     PosicionRepository posicionRepository;
 
-    public String jugarPartido(PartidoEntity partido, int equipoLocal, int equipoVisitante) {
+    public MarcadorEntity jugarPartido(PartidoEntity partido, int equipoLocal, int equipoVisitante) {
         partido.setEstadoPartido("jugado");
         partidoRepository.save(partido);
-        saveMarcador(partido, equipoLocal, equipoVisitante);
         saveTablaPosicion(partido, equipoLocal, equipoVisitante);
-        return ("jugado");
+        return saveMarcador(partido, equipoLocal, equipoVisitante);
     }
 
     private void saveTablaPosicion(PartidoEntity partido, int equipoLocal, int equipoVisitante) {
@@ -69,13 +68,14 @@ public class JugarPartido {
     }
 
 
-    public void saveMarcador(PartidoEntity partido, int equipoLocal, int equipoVisitante) {
+    private MarcadorEntity saveMarcador(PartidoEntity partido, int equipoLocal, int equipoVisitante) {
         MarcadorEntity marcadorEntity = new MarcadorEntity();
         marcadorEntity.setFkPartido(partido);
         marcadorEntity.setEquipoLocalMrc(equipoLocal);
         marcadorEntity.setEquipoVisitanteMrc(equipoVisitante);
         validateEquipoGanadorMarcador(partido, equipoLocal, equipoVisitante, marcadorEntity);
         marcadorRepository.save(marcadorEntity);
+        return marcadorEntity;
     }
 
     public void validateEquipoGanadorMarcador(PartidoEntity partido, int equipoLocal, int equipoVisitante, MarcadorEntity marcadorEntity) {
@@ -88,12 +88,5 @@ public class JugarPartido {
     }
 
 
-    public List<PosicionEntity> ordenarPosiciones(TorneoEntity torneoEntity) {
-        Iterable<PosicionEntity> posiciones = posicionRepository.findByFkTorneo(torneoEntity);
-        List<PosicionEntity> list = new ArrayList<>();
-        posiciones.forEach(list::add);
-        return list.stream()
-                .sorted(Comparator.comparing(PosicionEntity::getPuntos).thenComparing(PosicionEntity::getGolesDiferencia).reversed())
-                .collect(Collectors.toList());
-    }
+
 }

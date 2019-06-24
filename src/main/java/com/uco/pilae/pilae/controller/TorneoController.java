@@ -2,18 +2,17 @@ package com.uco.pilae.pilae.controller;
 import com.uco.pilae.pilae.entity.*;
 import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
 import com.uco.pilae.pilae.model.Equipo;
-import com.uco.pilae.pilae.model.Jugador;
 import com.uco.pilae.pilae.model.Torneo;
-import com.uco.pilae.pilae.operaciones.JugarPartido;
 import com.uco.pilae.pilae.repository.*;
-import com.uco.pilae.pilae.service.TorneoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.uco.pilae.pilae.service.TorneoQueryService;
+import com.uco.pilae.pilae.util.DataConversionUtil;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import java.util.Comparator;
+
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -23,68 +22,62 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
 public class TorneoController {
 
-    @Autowired
-    private TorneoService torneoService;
-    @Autowired
-    private TorneoRepository torneoRepository;
-    @Autowired
-    private EquipoRepository equipoRepository;
-    @Autowired
-    private PartidoRepository partidoRepository;
-    @Autowired
-    private JugadorRepository jugadorRepository;
-    @Autowired
-    private MarcadorRepository marcadorRepository;
-    @Autowired
-    private PosicionRepository posicionRepository;
-    @Autowired
-    private JugarPartido jugarPartido;
+    private final TorneoRepository torneoRepository;
+    private final TorneoQueryService queryService;
+    private final ModelMapper modelMapper;
+    private final DataConversionUtil dataConversion;
 
-
-
-    @PostMapping("insertar/torneo")
-    public void insertarTorneo(@RequestBody Torneo torneo){
-        torneoService.saveTorneo(torneo);
+    public TorneoController(TorneoRepository torneoRepository, TorneoQueryService queryService, ModelMapper modelMapper, DataConversionUtil dataConversion) {
+        this.torneoRepository = torneoRepository;
+        this.queryService = queryService;
+        this.modelMapper = modelMapper;
+        this.dataConversion = dataConversion;
     }
 
-    @DeleteMapping(value = "delete/torneo/{id}")
-    public void deleteTorneo(@PathVariable("id") Long id) {
-        torneoRepository.deleteById(id);
+    @PostMapping
+    public ResponseEntity<String> insertarTorneo(@RequestBody final Torneo torneo){
+        try {
+            TorneoEntity newTorneo= modelMapper.map(Objects.requireNonNull(torneo, "Ocurrio un error al procesar el Body de la peticion"), TorneoEntity.class);
+            queryService.save(newTorneo);
+            return buildResponse(newTorneo);
+
+        }catch (final Exception ex){
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(ex.getMessage());
+        }
     }
 
-
-    @PutMapping("update/torneo/{id}")
-    public void upadteTorneo(@RequestBody Torneo torneo, @PathVariable(value = "id") Long id){
-        torneoService.update(torneoAsociado(id),torneo);
-    }
-
-    @PostMapping("jugar/{id}")
-    public void jugarPartido(@RequestBody MarcadorEntity marcador, @PathVariable(value = "id") Long id){
-        jugarPartido.jugarPartido(partidoAsociado(id),marcador.getEquipoLocalMrc(),marcador.getEquipoVisitanteMrc());
-    }
-
-    @GetMapping("marcador/{id}")
-    public ResponseEntity marcador(@PathVariable(value = "id") Long id) {
-        MarcadorEntity marcador = marcadorRepository.findByFkPartido(partidoAsociado(id));
-        return new ResponseEntity(marcador, HttpStatus.OK);
+    @DeleteMapping(params = {"id"})
+    public ResponseEntity deleteTorneo(@RequestParam("id") final Long id) {
+        TorneoEntity old = queryService.findById(id);
+        queryService.delete(old);
+        return buildResponse(old);
     }
 
 
-    @GetMapping("listar/posiciones/{id}")
-    public ResponseEntity posiciones(@PathVariable(value = "id") Long id){
-        return new ResponseEntity(jugarPartido.ordenarPosiciones(torneoAsociado(id)), HttpStatus.OK);
+    @PutMapping(params = {"id"})
+    public ResponseEntity<String> update(@RequestParam(value = "id") final Long id, @RequestBody final Torneo torneo) {
+        try {
+            final TorneoEntity old = queryService.findById(id);
+            old.setNombre(torneo.getNombre());
+            old.setDescripcion(torneo.getDescripcion());
+            final TorneoEntity updated = queryService.save(old);
+            return buildResponse(updated);
+        } catch (final Exception ex) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(ex.getMessage());
+        }
+    }
+    @GetMapping
+    public List<Torneo> findAll(){
+        return queryService.findAll()
+                .parallelStream()
+                .map(entity-> modelMapper.map(entity,Torneo.class))
+                .collect(Collectors.toList());
     }
 
-    @GetMapping(value="listar/torneos")
-    public ResponseEntity listaTransactions(){
-        return new ResponseEntity(torneoService.listTorneos(), HttpStatus.OK);
+    private ResponseEntity<String> buildResponse(final TorneoEntity entity) {
+        final String jsonResponse = dataConversion.dtoToJson(modelMapper.map(entity, Torneo.class));
+        return ResponseEntity.ok(jsonResponse);
     }
-
-    private TorneoEntity torneoAsociado(Long id) {
-        return  torneoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));
-    }
-    private PartidoEntity partidoAsociado(Long id) {
-        return partidoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id));
-    }
-
 }

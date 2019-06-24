@@ -1,10 +1,20 @@
 package com.uco.pilae.pilae.entity;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
-@Table(name = "marcador_tbl")
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "marcador_tbl")
 public class MarcadorEntity {
 
     @Id
@@ -21,44 +31,4 @@ public class MarcadorEntity {
     @JoinColumn(name = "id_partido", nullable = false)
     @OneToOne(optional = false, cascade = CascadeType.PERSIST)
     private PartidoEntity fkPartido;
-
-    public Long getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Long codigo) {
-        this.codigo = codigo;
-    }
-
-    public String getEquipoGanador() {
-        return equipoGanador;
-    }
-
-    public void setEquipoGanador(String equipoGanador) {
-        this.equipoGanador = equipoGanador;
-    }
-
-    public int getEquipoLocalMrc() {
-        return equipoLocalMrc;
-    }
-
-    public void setEquipoLocalMrc(int equipoLocalMrc) {
-        this.equipoLocalMrc = equipoLocalMrc;
-    }
-
-    public int getEquipoVisitanteMrc() {
-        return equipoVisitanteMrc;
-    }
-
-    public void setEquipoVisitanteMrc(int equipoVisitanteMrc) {
-        this.equipoVisitanteMrc = equipoVisitanteMrc;
-    }
-
-    public PartidoEntity getFkPartido() {
-        return fkPartido;
-    }
-
-    public void setFkPartido(PartidoEntity fkPartido) {
-        this.fkPartido = fkPartido;
-    }
 }

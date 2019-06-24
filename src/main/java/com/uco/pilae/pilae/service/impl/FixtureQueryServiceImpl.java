@@ -1,8 +1,13 @@
 package com.uco.pilae.pilae.service.impl;
 
 import com.uco.pilae.pilae.entity.EquipoEntity;
+import com.uco.pilae.pilae.entity.MarcadorEntity;
+import com.uco.pilae.pilae.entity.PartidoEntity;
 import com.uco.pilae.pilae.entity.TorneoEntity;
+import com.uco.pilae.pilae.model.Marcador;
 import com.uco.pilae.pilae.operaciones.FixtureWhithReturn;
+import com.uco.pilae.pilae.operaciones.JugarPartido;
+import com.uco.pilae.pilae.repository.PartidoRepository;
 import com.uco.pilae.pilae.service.FixtureQueryService;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +18,13 @@ import java.util.List;
 public class FixtureQueryServiceImpl implements FixtureQueryService {
 
     private final FixtureWhithReturn fixtureWhithReturn;
+    private final PartidoRepository repository;
+    private final JugarPartido jugarPartido;
 
-    public FixtureQueryServiceImpl(FixtureWhithReturn fixtureWhithReturn) {
+    public FixtureQueryServiceImpl(final FixtureWhithReturn fixtureWhithReturn,final PartidoRepository repository,final JugarPartido jugarPartido) {
         this.fixtureWhithReturn = fixtureWhithReturn;
+        this.repository = repository;
+        this.jugarPartido = jugarPartido;
     }
 
 
@@ -33,5 +42,20 @@ public class FixtureQueryServiceImpl implements FixtureQueryService {
         fixtureWhithReturn.mostrarPartidos(fixtureWhithReturn.calcularLiga(generateFixture), generateFixture, id);
 
     }
+
+    @Override
+    public List<PartidoEntity> findAllByTorneo(Long id) {
+        return repository.findByFkTorneoCodigo(id);
+    }
+
+    @Override
+    public void deleteByFkTorneo(TorneoEntity fkTorneo) {
+        repository.deleteByfkTorneo(fkTorneo);
+    }
+
+
+
+
+
 
 }

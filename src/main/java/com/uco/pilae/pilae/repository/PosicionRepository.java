@@ -15,5 +15,5 @@ import java.util.List;
 @Repository
 public interface PosicionRepository extends JpaRepository<PosicionEntity,Long> {
     PosicionEntity findByFkEquipo(EquipoEntity fkEquipo );
-    List<PosicionEntity> findByFkTorneo(TorneoEntity fkTorneo);
+    List<PosicionEntity> findByFkTorneoCodigo(Long fkTorneo);
 }
