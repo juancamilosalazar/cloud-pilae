@@ -2,7 +2,6 @@ package com.uco.pilae.pilae.controller;
 
 import com.uco.pilae.pilae.model.Posicion;
 import com.uco.pilae.pilae.service.PosicionQueryService;
-import com.uco.pilae.pilae.util.DataConversionUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +15,10 @@ import java.util.stream.Collectors;
 public class PosicionController {
     private final PosicionQueryService queryService;
     private final ModelMapper modelMapper;
-    private final DataConversionUtil dataConversion;
 
-    public PosicionController(PosicionQueryService queryService, ModelMapper modelMapper, DataConversionUtil dataConversion) {
+    public PosicionController(final PosicionQueryService queryService,final ModelMapper modelMapper) {
         this.queryService = queryService;
         this.modelMapper = modelMapper;
-        this.dataConversion = dataConversion;
     }
 
     @GetMapping(params = {"id"})

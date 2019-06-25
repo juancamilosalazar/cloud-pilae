@@ -11,8 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Marcador {
-
+    private Long codigo;
     private String equipoGanador;
     private int equipoLocalMrc;
     private int equipoVisitanteMrc;
+    private Partido fkPartido;
 }
