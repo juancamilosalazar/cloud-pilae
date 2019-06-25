@@ -17,6 +17,6 @@ public class Equipo implements java.io.Serializable {
     @EqualsAndHashCode.Include
     private String locacion;
     private String genero;
-    private List<Jugador> jugadores;
+    private Torneo fkTorneo;
 
 }
