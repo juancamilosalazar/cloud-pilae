@@ -13,9 +13,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.PostConstruct;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 
 @EnableAutoConfiguration
@@ -23,6 +25,13 @@ import java.util.Locale;
 @SpringBootApplication
 @EnableJpaRepositories
 public class PilaeApplication {
+
+
+    @PostConstruct
+    void started() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        Locale.setDefault(new Locale("es", "CO"));
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(PilaeApplication.class, args);
