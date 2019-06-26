@@ -72,6 +72,7 @@ public class PilaeApplication {
     private Converter<Long, Date> longToDateConverter() {
         return context -> {
             final Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            calendar.setTimeZone(TimeZone.getDefault());
             calendar.setTimeInMillis(context.getSource());
             return calendar.getTime();
         };
