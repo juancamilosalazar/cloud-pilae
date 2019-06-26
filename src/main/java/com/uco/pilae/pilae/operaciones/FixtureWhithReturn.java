@@ -8,7 +8,10 @@ import org.springframework.stereotype.Component;
 
 
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
+
 @Component
 public class FixtureWhithReturn {
 
@@ -123,16 +126,14 @@ public class FixtureWhithReturn {
     }
     public void mostrarPartidos(Partido[][] rondas, HashMap<Integer, EquipoEntity> equipos, TorneoEntity id)
     {
-
-
+        final Calendar calendar = Calendar.getInstance(Locale.getDefault());
         for (int i = 0; i < rondas.length; i ++)
         {
-
             for (int j = 0; j < rondas[i].length; j ++)
             {
                 PartidoEntity partidoEntity= new PartidoEntity();
                 partidoEntity.setRonda("Ronda " + (i + 1));
-                partidoEntity.setFechaDelpartido(LocalDate.now());
+                partidoEntity.setFechaDelpartido(calendar.getTime());
                 partidoEntity.setFkTorneo(id);
                 partidoEntity.setFkEquipoLocal(equipos.get(1 + rondas[i][j].local));
                 partidoEntity.setFkEquipoVisitante(equipos.get(1 + rondas[i][j].visitante));
@@ -153,7 +154,7 @@ public class FixtureWhithReturn {
             {
                 PartidoEntity partidoEntity= new PartidoEntity();
                 partidoEntity.setRonda("Ronda " + (i + 1));
-                partidoEntity.setFechaDelpartido(LocalDate.now());
+                partidoEntity.setFechaDelpartido(calendar.getTime());
                 partidoEntity.setFkTorneo(id);
                 partidoEntity.setFkEquipoLocal(equipos.get(1 + rondas[i][j].visitante));
                 partidoEntity.setFkEquipoVisitante(equipos.get(1 + rondas[i][j].local));

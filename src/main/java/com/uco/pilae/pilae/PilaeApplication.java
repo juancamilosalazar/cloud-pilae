@@ -2,6 +2,7 @@ package com.uco.pilae.pilae;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -11,6 +12,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 
 @EnableAutoConfiguration
@@ -40,11 +45,26 @@ public class PilaeApplication {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        final ModelMapper mapper = new ModelMapper();
+        mapper.addConverter(this.dateToLongConverter());
+        mapper.addConverter(this.longToDateConverter());
+        return mapper;
     }
 
     @Bean
     public ObjectMapper jsonObjectMapper() {
         return new ObjectMapper();
+    }
+
+    private Converter<Date, Long> dateToLongConverter() {
+        return context -> context.getSource().getTime();
+    }
+
+    private Converter<Long, Date> longToDateConverter() {
+        return context -> {
+            final Calendar calendar = Calendar.getInstance(Locale.getDefault());
+            calendar.setTimeInMillis(context.getSource());
+            return calendar.getTime();
+        };
     }
 }

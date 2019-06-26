@@ -17,7 +17,7 @@ public class Jugador implements java.io.Serializable {
     @EqualsAndHashCode.Include
     private String identificacion;
     //TODO:CAMBIAR LONG
-    private String fechaNacimiento;
+    private Long fechaNacimiento;
     private Equipo fkEquipo;
 
 }

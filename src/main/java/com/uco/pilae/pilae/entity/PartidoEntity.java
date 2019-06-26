@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -20,7 +21,8 @@ public class PartidoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
     @Column(name = "fecha_partido")
-    private LocalDate fechaDelpartido;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaDelpartido;
     @Column(name = "ida_vuelta")
     private String idaVuelta;
     @Column(name = "ronda")

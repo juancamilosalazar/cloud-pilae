@@ -1,6 +1,5 @@
 package com.uco.pilae.pilae.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class JugadorEntity {
 
     @Id
-    @Column(name = "id_jugador",nullable = false)
+    @Column(name = "id_jugador", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "nombre")
@@ -26,7 +26,8 @@ public class JugadorEntity {
     @Column(name = "identificacion")
     private String identificacion;
     @Column(name = "fecha_nacimiento")
-    private LocalDate fechaNacimiento;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaNacimiento;
 
 
     @JoinColumn(name = "id_equipo", nullable = false)

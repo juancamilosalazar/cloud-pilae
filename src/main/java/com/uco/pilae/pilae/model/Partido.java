@@ -15,7 +15,7 @@ public class Partido implements java.io.Serializable {
     private Equipo fkEquipoLocal;
     private Equipo fkEquipoVisitante;
     private String ronda;
-    private String fechaDelPartido;
+    private Long fechaDelPartido;
     private String idaVuelta;
     private String estadoPartido;
     private Torneo fkTorneo;

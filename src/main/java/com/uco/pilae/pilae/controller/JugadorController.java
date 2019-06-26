@@ -10,7 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -61,9 +63,11 @@ public class JugadorController {
     @PutMapping(params = {"id"})
     public ResponseEntity<String> update(@RequestParam(value = "id") final Long id,@RequestBody final Jugador newJugador){
         try {
+            final Calendar calendar = Calendar.getInstance(Locale.getDefault());
             JugadorEntity old= queryService.findById(id);
             old.setNombre(newJugador.getNombre());
-            old.setFechaNacimiento(newJugador.getFechaNacimiento());
+            calendar.setTimeInMillis(newJugador.getFechaNacimiento());
+            old.setFechaNacimiento(calendar.getTime());
             old.setIdentificacion(newJugador.getIdentificacion());
             final JugadorEntity jugadorEntity = queryService.save(old);
             return buildResponse(jugadorEntity);
