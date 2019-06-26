@@ -26,7 +26,7 @@ public class JugadorEntity {
     @Column(name = "identificacion")
     private String identificacion;
     @Column(name = "fecha_nacimiento")
-    private String fechaNacimiento;
+    private LocalDate fechaNacimiento;
 
 
     @JoinColumn(name = "id_equipo", nullable = false)

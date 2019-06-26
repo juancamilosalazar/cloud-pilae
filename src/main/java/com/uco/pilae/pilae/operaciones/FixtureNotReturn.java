@@ -6,10 +6,7 @@ import com.uco.pilae.pilae.entity.TorneoEntity;
 import com.uco.pilae.pilae.repository.PartidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
 
 @Component
@@ -135,7 +132,7 @@ public class FixtureNotReturn {
             {
                 PartidoEntity partidoEntity= new PartidoEntity();
                 partidoEntity.setRonda("Ronda " + (i + 1));
-                partidoEntity.setFechaDelpartido(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+                partidoEntity.setFechaDelpartido(LocalDate.now());
                 partidoEntity.setFkTorneo(id);
                 partidoEntity.setFkEquipoLocal(equipos.get(1 + rondas[i][j].local));
                 partidoEntity.setFkEquipoVisitante(equipos.get(1 + rondas[i][j].visitante));
