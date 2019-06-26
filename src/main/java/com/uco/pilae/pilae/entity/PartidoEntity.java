@@ -20,7 +20,7 @@ public class PartidoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
     @Column(name = "fecha_partido")
-    private LocalDate fechaDelpartido;
+    private String fechaDelpartido;
     @Column(name = "ida_vuelta")
     private String idaVuelta;
     @Column(name = "ronda")
