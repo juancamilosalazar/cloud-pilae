@@ -38,8 +38,8 @@ public class PartidoController {
         this.equipoRepository = equipoRepository;
     }
 
-    @PostMapping(params = {"id"})
-    public void save(@RequestParam(value = "id") Long torneoId) {
+    @GetMapping(params = {"idTorneo"})
+    public void save(@RequestParam(value = "idTorneo") Long torneoId) {
         TorneoEntity torneo= torneoRepository.findById(torneoId).orElseThrow(()->new ResourceNotFoundException("torneo_tbl","torneo_tbl",torneoId));
         queryService.deleteByFkTorneo(torneo);
         List<EquipoEntity> equipos = equipoRepository.findByFkTorneo(torneo);
