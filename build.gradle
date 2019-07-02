@@ -31,6 +31,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'org.modelmapper:modelmapper:2.3.4'
+    // https://mvnrepository.com/artifact/org.springframework/spring-webflux
+    compile group: 'org.springframework', name: 'spring-webflux', version: '5.1.8.RELEASE'
+
 }
 
 dependencyManagement {

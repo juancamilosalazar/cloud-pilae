@@ -7,6 +7,8 @@ import com.uco.pilae.pilae.repository.MarcadorRepository;
 import com.uco.pilae.pilae.service.MarcadorQueryService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class MarcadorQueryServiceImpl implements MarcadorQueryService {
@@ -27,5 +29,10 @@ public class MarcadorQueryServiceImpl implements MarcadorQueryService {
     @Override
     public MarcadorEntity findByFkPartido(PartidoEntity partidoEntity) {
         return repository.findByFkPartido(partidoEntity);
+    }
+
+    @Override
+    public List<MarcadorEntity> findByFkTorneo(Long id) {
+        return repository.findByFkPartidoFkTorneoCodigo(id);
     }
 }

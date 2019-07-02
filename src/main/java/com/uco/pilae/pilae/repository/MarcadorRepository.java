@@ -8,9 +8,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Repository
 @Transactional
 public interface MarcadorRepository extends JpaRepository<MarcadorEntity,Long> {
-    MarcadorEntity findByFkPartido(PartidoEntity partidoEntity);
+    MarcadorEntity findByFkPartido(final PartidoEntity partidoEntity);
+    List<MarcadorEntity> findByFkPartidoFkTorneoCodigo(final Long id);
 }

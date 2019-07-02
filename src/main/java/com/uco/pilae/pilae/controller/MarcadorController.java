@@ -7,10 +7,15 @@ import com.uco.pilae.pilae.model.Marcador;
 import com.uco.pilae.pilae.repository.PartidoRepository;
 import com.uco.pilae.pilae.service.MarcadorQueryService;
 import com.uco.pilae.pilae.util.DataConversionUtil;
+import org.hibernate.engine.internal.Collections;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/pilae/marcador")
@@ -44,8 +49,17 @@ public class MarcadorController {
         return buildResponse(marcador);
     }
 
+    @GetMapping(params = {"idTorneo"})
+    public List<Marcador> findByTorneo(@RequestParam(value = "idTorneo") final Long id){
+        return queryService.findByFkTorneo(id)
+                .parallelStream()
+                .map(entity-> modelMapper.map(entity,Marcador.class))
+                .collect(Collectors.toList());
+    }
+
     private ResponseEntity<String> buildResponse(final MarcadorEntity entity) {
-        final String jsonResponse = dataConversion.dtoToJson(modelMapper.map(entity, Marcador.class));
+        final String jsonResponse = dataConversion
+                .dtoToJson(modelMapper.map(entity, Marcador.class));
         return ResponseEntity.ok(jsonResponse);
     }
 
