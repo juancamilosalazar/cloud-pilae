@@ -41,6 +41,7 @@ public class PartidoController {
     @GetMapping(params = {"idTorneo"})
     public void save(@RequestParam(value = "idTorneo") final Long torneoId) {
         TorneoEntity torneo= torneoRepository.findById(torneoId).orElseThrow(()->new ResourceNotFoundException("torneo_tbl","torneo_tbl",torneoId));
+        queryService.deleteByFkTorneo(torneo);
         List<EquipoEntity> equipos = equipoRepository.findByFkTorneo(torneo);
         queryService.generateFixture(equipos,torneo);
     }
