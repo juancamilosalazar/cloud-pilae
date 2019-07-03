@@ -45,6 +45,13 @@ public class EquipoController {
         final EquipoEntity entity = queryService.findById(id);
         return modelMapper.map(entity, Equipo.class);
     }
+    @GetMapping(params = {"idTorneo"})
+    public List<Equipo> findByIdTorneo(@RequestParam("idTorneo") final Long id) {
+        return queryService.findAllByTorneo(id)
+                .parallelStream()
+                .map(equipo-> modelMapper.map(equipo,Equipo.class))
+                .collect(Collectors.toList());
+    }
 
     @PostMapping(params = {"torneoId"})
     public ResponseEntity<String> create(@RequestParam(value = "torneoId") final Long torneoId, @RequestBody final Equipo equipo) {

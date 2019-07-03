@@ -39,15 +39,14 @@ public class PartidoController {
     }
 
     @GetMapping(params = {"idTorneo"})
-    public void save(@RequestParam(value = "idTorneo") Long torneoId) {
+    public void save(@RequestParam(value = "idTorneo") final Long torneoId) {
         TorneoEntity torneo= torneoRepository.findById(torneoId).orElseThrow(()->new ResourceNotFoundException("torneo_tbl","torneo_tbl",torneoId));
-        queryService.deleteByFkTorneo(torneo);
         List<EquipoEntity> equipos = equipoRepository.findByFkTorneo(torneo);
         queryService.generateFixture(equipos,torneo);
     }
 
     @GetMapping(params = {"id"})
-    public List<Partido> findAllByTorneo(@RequestParam(value = "id") Long torneoId) {
+    public List<Partido> findAllByTorneo(@RequestParam(value = "id")final Long torneoId) {
         List<PartidoEntity> partidos = queryService.findAllByTorneo(torneoId)
                 .stream()
                 .sorted(Comparator.comparing(PartidoEntity::getCodigo))

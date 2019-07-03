@@ -7,14 +7,12 @@ import com.uco.pilae.pilae.model.Marcador;
 import com.uco.pilae.pilae.repository.PartidoRepository;
 import com.uco.pilae.pilae.service.MarcadorQueryService;
 import com.uco.pilae.pilae.util.DataConversionUtil;
-import org.hibernate.engine.internal.Collections;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @RestController

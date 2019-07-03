@@ -33,6 +33,9 @@ dependencies {
     implementation 'org.modelmapper:modelmapper:2.3.4'
     // https://mvnrepository.com/artifact/org.springframework/spring-webflux
     compile group: 'org.springframework', name: 'spring-webflux', version: '5.1.8.RELEASE'
+    // https://mvnrepository.com/artifact/org.flywaydb/flyway-core
+    compile  'org.flywaydb:flyway-core:5.2.4'
+
 
 }
 

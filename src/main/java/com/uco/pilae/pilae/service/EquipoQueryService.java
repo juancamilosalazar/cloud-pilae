@@ -1,6 +1,8 @@
 package com.uco.pilae.pilae.service;
 import com.uco.pilae.pilae.entity.EquipoEntity;
 
+import java.util.List;
+
 public interface EquipoQueryService extends QueryServiceBase<EquipoEntity> {
 
     EquipoEntity crear(final EquipoEntity newEntity, final Long torneoId);
