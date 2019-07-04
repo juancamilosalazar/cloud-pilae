@@ -120,6 +120,7 @@ public class FixtureNotReturn {
                 partidoEntity.setFkTorneo(id);
                 partidoEntity.setFkEquipoLocal(equipos.get(1 + rondas[i][j].local));
                 partidoEntity.setFkEquipoVisitante(equipos.get(1 + rondas[i][j].visitante));
+                partidoEntity.setEstadoPartido("sin jugar");
                 partidoEntity.setIdaVuelta("solo ida");
                 partidoRepository.save(partidoEntity);
             }

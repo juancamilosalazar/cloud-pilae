@@ -1,10 +1,9 @@
 package com.uco.pilae.pilae.service.impl;
 
 import com.uco.pilae.pilae.entity.EquipoEntity;
-import com.uco.pilae.pilae.entity.MarcadorEntity;
 import com.uco.pilae.pilae.entity.PartidoEntity;
 import com.uco.pilae.pilae.entity.TorneoEntity;
-import com.uco.pilae.pilae.model.Marcador;
+import com.uco.pilae.pilae.operaciones.FixtureNotReturn;
 import com.uco.pilae.pilae.operaciones.FixtureWhithReturn;
 import com.uco.pilae.pilae.operaciones.JugarPartido;
 import com.uco.pilae.pilae.repository.PartidoRepository;
@@ -20,11 +19,12 @@ public class FixtureQueryServiceImpl implements FixtureQueryService {
     private final FixtureWhithReturn fixtureWhithReturn;
     private final PartidoRepository repository;
     private final JugarPartido jugarPartido;
-
-    public FixtureQueryServiceImpl(final FixtureWhithReturn fixtureWhithReturn,final PartidoRepository repository,final JugarPartido jugarPartido) {
+    private final FixtureNotReturn fixtureNotReturn;
+    public FixtureQueryServiceImpl(final FixtureWhithReturn fixtureWhithReturn, final PartidoRepository repository, final JugarPartido jugarPartido, FixtureNotReturn fixtureNotReturn) {
         this.fixtureWhithReturn = fixtureWhithReturn;
         this.repository = repository;
         this.jugarPartido = jugarPartido;
+        this.fixtureNotReturn = fixtureNotReturn;
     }
 
 
@@ -41,6 +41,20 @@ public class FixtureQueryServiceImpl implements FixtureQueryService {
         //calcula el fixture con el hashmap generado
         fixtureWhithReturn.mostrarPartidos(fixtureWhithReturn.calcularLiga(generateFixture), generateFixture, id);
 
+    }
+
+    @Override
+    public void generateFixtureNotReturn(List<EquipoEntity> equipos, TorneoEntity id) {
+        HashMap<Integer, EquipoEntity> generateFixture = new HashMap<>();
+        int idEquipo = 0;
+        for (EquipoEntity equipo : equipos) {
+            //para cada equipo le agrega un id que ayudara a generar el fixture
+            idEquipo++;
+            //inserta el equipo con el id generado para el fixture y el id
+            generateFixture.put(idEquipo, equipo);
+        }
+        //calcula el fixture con el hashmap generado
+        fixtureNotReturn.mostrarPartidos(fixtureWhithReturn.calcularLiga(generateFixture), generateFixture, id);
     }
 
     @Override

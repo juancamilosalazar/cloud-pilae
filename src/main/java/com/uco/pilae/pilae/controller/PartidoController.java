@@ -45,6 +45,13 @@ public class PartidoController {
         List<EquipoEntity> equipos = equipoRepository.findByFkTorneo(torneo);
         queryService.generateFixture(equipos,torneo);
     }
+    @GetMapping(params = {"idNotReturn"})
+    public void saveFixtureWithNotReturn(@RequestParam(value = "idNotReturn") final Long torneoId) {
+        TorneoEntity torneo= torneoRepository.findById(torneoId).orElseThrow(()->new ResourceNotFoundException("torneo_tbl","torneo_tbl",torneoId));
+        queryService.deleteByFkTorneo(torneo);
+        List<EquipoEntity> equipos = equipoRepository.findByFkTorneo(torneo);
+        queryService.generateFixtureNotReturn(equipos,torneo);
+    }
 
     @GetMapping(params = {"id"})
     public List<Partido> findAllByTorneo(@RequestParam(value = "id")final Long torneoId) {

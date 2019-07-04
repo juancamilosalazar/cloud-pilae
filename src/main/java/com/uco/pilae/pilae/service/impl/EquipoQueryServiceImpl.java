@@ -63,11 +63,7 @@ public class EquipoQueryServiceImpl implements EquipoQueryService {
     public void initPartido(EquipoEntity equipoEntity) {
             PosicionEntity posicionEntity = new PosicionEntity();
             posicionEntity.setPuntos(0);
-            if (equipoEntity.getFkTorneo().getFkDeporte().getNombre().equals("baloncesto")||equipoEntity.getFkTorneo().getFkDeporte().getNombre().equals("voleibol")) {
-
-            }else {
-                posicionEntity.setPartidosEmpatados(0);
-            }
+            posicionEntity.setPartidosEmpatados(0);
             posicionEntity.setPartidosPerdidos(0);
             posicionEntity.setPartidosGanados(0);
             posicionEntity.setPartidosJugados(0);

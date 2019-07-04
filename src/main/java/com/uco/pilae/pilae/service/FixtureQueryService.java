@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface FixtureQueryService {
     void generateFixture(final List<EquipoEntity> equipos,final TorneoEntity id);
+    void generateFixtureNotReturn(final List<EquipoEntity> equipos,final TorneoEntity id);
+
     List<PartidoEntity> findAllByTorneo(final Long id);
     void deleteByFkTorneo(final TorneoEntity fkTorneo);
 

@@ -66,7 +66,6 @@ public class EquipoController {
     }
 
 
-
     @PutMapping(params = {"id"})
     public ResponseEntity<String> update(@RequestParam(value = "id") final Long id, @RequestBody final Equipo equipo) {
         try {
