@@ -1,7 +1,9 @@
 package com.uco.pilae.pilae.service.impl;
 
+import com.uco.pilae.pilae.entity.DeporteEntity;
 import com.uco.pilae.pilae.entity.TorneoEntity;
 import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
+import com.uco.pilae.pilae.repository.DeporteRepository;
 import com.uco.pilae.pilae.repository.TorneoRepository;
 import com.uco.pilae.pilae.service.TorneoQueryService;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,11 @@ import java.util.List;
 public class TorneoQueryServiceImpl implements TorneoQueryService {
 
     final private TorneoRepository repository;
+    final private DeporteRepository deporteRepository;
 
-    public TorneoQueryServiceImpl(TorneoRepository repository) {
+    public TorneoQueryServiceImpl(TorneoRepository repository, DeporteRepository deporteRepository) {
         this.repository = repository;
+        this.deporteRepository = deporteRepository;
     }
 
     @Override
@@ -42,5 +46,18 @@ public class TorneoQueryServiceImpl implements TorneoQueryService {
     public TorneoEntity findById(Long id) {
         return repository.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException("torneo_tbl", "torneo_tbl", id));
+    }
+
+    @Override
+    public List<TorneoEntity> findByDeporte(Long idDeporte) {
+        return repository.findAllByFkDeporteCodigo(idDeporte);
+    }
+
+    @Override
+    public TorneoEntity create(TorneoEntity newTorneo, Long idDeporte) {
+        return deporteRepository.findById(idDeporte).map(deporteEntity -> {
+            newTorneo.setFkDeporte(deporteEntity);
+            return newTorneo;
+        }).map(repository::saveAndFlush).orElseThrow(() -> new ResourceNotFoundException("torneo_tbl", "torneo_tbl", idDeporte));
     }
 }

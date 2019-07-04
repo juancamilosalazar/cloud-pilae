@@ -1,7 +1,5 @@
 package com.uco.pilae.pilae.controller;
 import com.uco.pilae.pilae.entity.*;
-import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
-import com.uco.pilae.pilae.model.Equipo;
 import com.uco.pilae.pilae.model.Torneo;
 import com.uco.pilae.pilae.repository.*;
 import com.uco.pilae.pilae.service.TorneoQueryService;
@@ -34,12 +32,12 @@ public class TorneoController {
         this.dataConversion = dataConversion;
     }
 
-    @PostMapping
-    public ResponseEntity<String> insertarTorneo(@RequestBody final Torneo torneo){
+    @PostMapping(params = {"idDeporte"})
+    public ResponseEntity<String> insertarTorneo(@RequestBody final Torneo torneo,@RequestParam(value = "idDeporte") final Long idDeporte){
         try {
             TorneoEntity newTorneo= modelMapper.map(Objects.requireNonNull(torneo, "Ocurrio un error al procesar el Body de la peticion"), TorneoEntity.class);
-            queryService.save(newTorneo);
-            return buildResponse(newTorneo);
+            TorneoEntity created = queryService.create(newTorneo,idDeporte);
+            return buildResponse(created);
 
         }catch (final Exception ex){
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
@@ -71,6 +69,13 @@ public class TorneoController {
     @GetMapping
     public List<Torneo> findAll(){
         return queryService.findAll()
+                .parallelStream()
+                .map(entity-> modelMapper.map(entity,Torneo.class))
+                .collect(Collectors.toList());
+    }
+    @GetMapping(params = {"idDeporte"})
+    public List<Torneo> dinfByDeporte(@RequestParam(value = "idDeporte") final Long idDeporte){
+        return queryService.findByDeporte(idDeporte)
                 .parallelStream()
                 .map(entity-> modelMapper.map(entity,Torneo.class))
                 .collect(Collectors.toList());

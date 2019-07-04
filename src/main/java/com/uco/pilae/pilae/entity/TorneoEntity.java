@@ -25,4 +25,8 @@ public class TorneoEntity implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
+    @JoinColumn(name = "id_deporte", nullable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private DeporteEntity fkDeporte;
+
 }

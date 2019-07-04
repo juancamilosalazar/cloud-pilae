@@ -17,4 +17,5 @@ public class Torneo {
     private Long codigo;
     private String nombre;
     private String descripcion;
+    private Deporte fkDeporte;
 }
