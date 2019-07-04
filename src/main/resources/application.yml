@@ -22,16 +22,16 @@ logging:
       hibernate:
         SQL: DEBUG
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_URL:http://user:password@localhost:5000}/eureka/
-  instance:
-    hostname: ${DOMAIN_NAME:localhost}
-    nonSecurePort: 80
-    password: ${USER_PASSWORD:password}
-security:
-  user:
-    password: ${eureka.password:password}
+#eureka:
+#  client:
+#   serviceUrl:
+#      defaultZone: ${EUREKA_URL:http://user:password@localhost:5000}/eureka/
+#  instance:
+#    hostname: ${DOMAIN_NAME:localhost}
+#    nonSecurePort: 80
+#    password: ${USER_PASSWORD:password}
+#security:
+#  user:
+#    password: ${eureka.password:password}
 
 

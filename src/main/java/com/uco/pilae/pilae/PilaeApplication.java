@@ -21,7 +21,7 @@ import java.util.TimeZone;
 
 
 @EnableAutoConfiguration
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 @SpringBootApplication
 @EnableJpaRepositories
 public class PilaeApplication {
