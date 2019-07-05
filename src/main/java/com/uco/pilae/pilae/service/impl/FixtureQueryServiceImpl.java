@@ -3,15 +3,16 @@ package com.uco.pilae.pilae.service.impl;
 import com.uco.pilae.pilae.entity.EquipoEntity;
 import com.uco.pilae.pilae.entity.PartidoEntity;
 import com.uco.pilae.pilae.entity.TorneoEntity;
+import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
 import com.uco.pilae.pilae.operaciones.FixtureNotReturn;
 import com.uco.pilae.pilae.operaciones.FixtureWhithReturn;
 import com.uco.pilae.pilae.operaciones.JugarPartido;
 import com.uco.pilae.pilae.repository.PartidoRepository;
+import com.uco.pilae.pilae.repository.TorneoRepository;
 import com.uco.pilae.pilae.service.FixtureQueryService;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class FixtureQueryServiceImpl implements FixtureQueryService {
@@ -20,11 +21,13 @@ public class FixtureQueryServiceImpl implements FixtureQueryService {
     private final PartidoRepository repository;
     private final JugarPartido jugarPartido;
     private final FixtureNotReturn fixtureNotReturn;
-    public FixtureQueryServiceImpl(final FixtureWhithReturn fixtureWhithReturn, final PartidoRepository repository, final JugarPartido jugarPartido, FixtureNotReturn fixtureNotReturn) {
+    private final TorneoRepository torneoRepository;
+    public FixtureQueryServiceImpl(final FixtureWhithReturn fixtureWhithReturn, final PartidoRepository repository, final JugarPartido jugarPartido, FixtureNotReturn fixtureNotReturn, TorneoRepository torneoRepository) {
         this.fixtureWhithReturn = fixtureWhithReturn;
         this.repository = repository;
         this.jugarPartido = jugarPartido;
         this.fixtureNotReturn = fixtureNotReturn;
+        this.torneoRepository = torneoRepository;
     }
 
 
@@ -58,8 +61,37 @@ public class FixtureQueryServiceImpl implements FixtureQueryService {
     }
 
     @Override
+    public PartidoEntity crear(PartidoEntity newEntity, Long torneoId) {
+        return torneoRepository.findById(torneoId)
+                .map(torneoEntity -> {
+                    newEntity.setFkTorneo(torneoEntity);
+                    final Calendar calendar = Calendar.getInstance(Locale.getDefault());
+                    newEntity.setFechaDelpartido(calendar.getTime());
+                    newEntity.setEstadoPartido("sin jugar");
+                    return newEntity;
+                })
+                .map(repository::saveAndFlush)
+                .orElseThrow(() -> new ResourceNotFoundException("torneo_tbl", "torneo_tbl", torneoId));
+    }
+
+    @Override
+    public List<PartidoEntity> findAll() {
+        return repository.findAll();
+    }
+
+    @Override
     public List<PartidoEntity> findAllByTorneo(Long id) {
         return repository.findByFkTorneoCodigo(id);
+    }
+
+    @Override
+    public PartidoEntity save(PartidoEntity entity) {
+        return repository.saveAndFlush(entity);
+    }
+
+    @Override
+    public void delete(PartidoEntity entity) {
+        repository.deleteInBatch(Arrays.asList(entity));
     }
 
     @Override

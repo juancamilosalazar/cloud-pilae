@@ -1,15 +1,14 @@
 package com.uco.pilae.pilae.controller;
 
 
+import com.uco.pilae.pilae.entity.DeporteEntity;
 import com.uco.pilae.pilae.entity.EquipoEntity;
-import com.uco.pilae.pilae.entity.MarcadorEntity;
 import com.uco.pilae.pilae.entity.PartidoEntity;
 import com.uco.pilae.pilae.entity.TorneoEntity;
 import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
-import com.uco.pilae.pilae.model.Marcador;
+import com.uco.pilae.pilae.model.Equipo;
 import com.uco.pilae.pilae.model.Partido;
 import com.uco.pilae.pilae.repository.EquipoRepository;
-import com.uco.pilae.pilae.repository.PartidoRepository;
 import com.uco.pilae.pilae.repository.TorneoRepository;
 import com.uco.pilae.pilae.service.FixtureQueryService;
 import com.uco.pilae.pilae.util.DataConversionUtil;
@@ -18,8 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -30,12 +28,14 @@ public class PartidoController {
     private final ModelMapper modelMapper;
     private final TorneoRepository torneoRepository;
     private final EquipoRepository equipoRepository;
+    private final DataConversionUtil dataConversion;
 
-    public PartidoController(FixtureQueryService queryService, ModelMapper modelMapper, TorneoRepository torneoRepository, EquipoRepository equipoRepository) {
+    public PartidoController(FixtureQueryService queryService, ModelMapper modelMapper, TorneoRepository torneoRepository, EquipoRepository equipoRepository, DataConversionUtil dataConversion) {
         this.queryService = queryService;
         this.modelMapper = modelMapper;
         this.torneoRepository = torneoRepository;
         this.equipoRepository = equipoRepository;
+        this.dataConversion = dataConversion;
     }
 
     @GetMapping(params = {"idTorneo"})
@@ -60,5 +60,24 @@ public class PartidoController {
                 .sorted(Comparator.comparing(PartidoEntity::getCodigo))
                 .collect(Collectors.toList());
         return partidos.parallelStream().map(partido->modelMapper.map(partido,Partido.class)).collect(Collectors.toList());
+    }
+
+    @PostMapping(params = {"id","idLocal","idVisitante"} )
+    public ResponseEntity<String> create(@RequestParam(value = "id")final Long id,@RequestParam(value = "idLocal")final Long idLocal,@RequestParam(value = "idVisitante")final Long idVisitante, @RequestBody final Partido partido){
+        try {
+            PartidoEntity partidoEntity = modelMapper.map(Objects.requireNonNull(partido, "Ocurrio un error al procesar el Body de la peticion"), PartidoEntity.class);
+            partidoEntity.setFkEquipoLocal(equipoRepository.findById(idLocal).orElseThrow(() -> new ResourceNotFoundException("torneo_tbl", "torneo_tbl", idLocal)));
+            partidoEntity.setFkEquipoVisitante(equipoRepository.findById(idVisitante).orElseThrow(() -> new ResourceNotFoundException("torneo_tbl", "torneo_tbl", idVisitante)));
+            PartidoEntity newPartido = queryService.crear(partidoEntity,id);
+            return buildResponse(newPartido);
+        }catch (Exception ex){
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                    .body(ex.getMessage());
+        }
+    }
+
+    private ResponseEntity<String> buildResponse(final PartidoEntity entity) {
+        final String jsonResponse = dataConversion.dtoToJson(modelMapper.map(entity, Partido.class));
+        return ResponseEntity.ok(jsonResponse);
     }
 }

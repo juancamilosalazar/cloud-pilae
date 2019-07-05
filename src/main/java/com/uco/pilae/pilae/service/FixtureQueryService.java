@@ -8,10 +8,10 @@ import com.uco.pilae.pilae.model.Marcador;
 
 import java.util.List;
 
-public interface FixtureQueryService {
+public interface FixtureQueryService extends QueryServiceBase<PartidoEntity> {
     void generateFixture(final List<EquipoEntity> equipos,final TorneoEntity id);
     void generateFixtureNotReturn(final List<EquipoEntity> equipos,final TorneoEntity id);
-
+    PartidoEntity crear(final PartidoEntity newEntity, final Long torneoId);
     List<PartidoEntity> findAllByTorneo(final Long id);
     void deleteByFkTorneo(final TorneoEntity fkTorneo);
 

@@ -41,7 +41,7 @@ public class DeporteController {
     }
 
     @PostMapping
-    public ResponseEntity crear(@RequestBody final Deporte deporte){
+    public ResponseEntity<String> crear(@RequestBody final Deporte deporte){
         try {
             DeporteEntity deporteEntity= modelMapper.map(Objects.requireNonNull(deporte, "Ocurrio un error al procesar el Body de la peticion"), DeporteEntity.class);
             DeporteEntity newDeporte = queryService.save(deporteEntity);
