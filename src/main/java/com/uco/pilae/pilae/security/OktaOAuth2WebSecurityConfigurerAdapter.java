@@ -16,7 +16,7 @@ public class OktaOAuth2WebSecurityConfigurerAdapter extends WebSecurityConfigure
                 .authorizeRequests()
                 .anyRequest().authenticated().and()
                 .oauth2ResourceServer().jwt();
-1
+
         Okta.configureResourceServer401ResponseBody(http);
     }
    /* @Override
