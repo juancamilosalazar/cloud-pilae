@@ -1,5 +1,8 @@
-FROM openjdk:8-jdk-alpine
-VOLUME /tmp
-ARG JAR_FILE
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+FROM anapsix/alpine-java:8
+WORKDIR /app
+RUN apk add --no-cache tzdata
+ENV TZ America/Bogota
+ADD api/build/libs/*.jar /app/
+RUN mv *.jar app.jar
+EXPOSE 8443
+CMD java -jar /app/app.jar

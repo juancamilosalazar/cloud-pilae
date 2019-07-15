@@ -18,7 +18,7 @@ import javax.persistence.*;
 public class MarcadorEntity {
 
     @Id
-    @Column(name = "id_marcador",nullable = false)
+    @Column(name = "id_marcador", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
     @Column(name = "equipo_ganador")

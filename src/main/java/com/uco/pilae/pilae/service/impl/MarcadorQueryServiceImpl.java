@@ -15,7 +15,7 @@ public class MarcadorQueryServiceImpl implements MarcadorQueryService {
     final private JugarPartido jugarPartido;
     final private MarcadorRepository repository;
 
-    public MarcadorQueryServiceImpl(final JugarPartido jugarPartido,final MarcadorRepository repository) {
+    public MarcadorQueryServiceImpl(final JugarPartido jugarPartido, final MarcadorRepository repository) {
         this.jugarPartido = jugarPartido;
         this.repository = repository;
     }
@@ -23,7 +23,7 @@ public class MarcadorQueryServiceImpl implements MarcadorQueryService {
 
     @Override
     public MarcadorEntity jugarPartido(PartidoEntity partido, int equipoLocal, int equipoVisitante) {
-        return jugarPartido.jugarPartido(partido,equipoLocal,equipoVisitante);
+        return jugarPartido.jugarPartido(partido, equipoLocal, equipoVisitante);
     }
 
     @Override

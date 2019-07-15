@@ -1,7 +1,8 @@
 package com.uco.pilae.pilae.controller;
-import com.uco.pilae.pilae.entity.*;
+
+import com.uco.pilae.pilae.entity.TorneoEntity;
 import com.uco.pilae.pilae.model.Torneo;
-import com.uco.pilae.pilae.repository.*;
+import com.uco.pilae.pilae.repository.TorneoRepository;
 import com.uco.pilae.pilae.service.TorneoQueryService;
 import com.uco.pilae.pilae.util.DataConversionUtil;
 import org.modelmapper.ModelMapper;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 //, consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE
 @RestController
 @RequestMapping(path = "/pilae/torneo")
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT})
 public class TorneoController {
 
     private final TorneoRepository torneoRepository;
@@ -33,13 +34,13 @@ public class TorneoController {
     }
 
     @PostMapping(params = {"idDeporte"})
-    public ResponseEntity<String> insertarTorneo(@RequestBody final Torneo torneo,@RequestParam(value = "idDeporte") final Long idDeporte){
+    public ResponseEntity<String> insertarTorneo(@RequestBody final Torneo torneo, @RequestParam(value = "idDeporte") final Long idDeporte) {
         try {
-            TorneoEntity newTorneo= modelMapper.map(Objects.requireNonNull(torneo, "Ocurrio un error al procesar el Body de la peticion"), TorneoEntity.class);
-            TorneoEntity created = queryService.create(newTorneo,idDeporte);
+            TorneoEntity newTorneo = modelMapper.map(Objects.requireNonNull(torneo, "Ocurrio un error al procesar el Body de la peticion"), TorneoEntity.class);
+            TorneoEntity created = queryService.create(newTorneo, idDeporte);
             return buildResponse(created);
 
-        }catch (final Exception ex){
+        } catch (final Exception ex) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
                     .body(ex.getMessage());
         }
@@ -66,18 +67,20 @@ public class TorneoController {
                     .body(ex.getMessage());
         }
     }
+
     @GetMapping
-    public List<Torneo> findAll(){
+    public List<Torneo> findAll() {
         return queryService.findAll()
                 .parallelStream()
-                .map(entity-> modelMapper.map(entity,Torneo.class))
+                .map(entity -> modelMapper.map(entity, Torneo.class))
                 .collect(Collectors.toList());
     }
+
     @GetMapping(params = {"idDeporte"})
-    public List<Torneo> dinfByDeporte(@RequestParam(value = "idDeporte") final Long idDeporte){
+    public List<Torneo> finfByDeporte(@RequestParam(value = "idDeporte") final Long idDeporte) {
         return queryService.findByDeporte(idDeporte)
                 .parallelStream()
-                .map(entity-> modelMapper.map(entity,Torneo.class))
+                .map(entity -> modelMapper.map(entity, Torneo.class))
                 .collect(Collectors.toList());
     }
 

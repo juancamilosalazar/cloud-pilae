@@ -3,17 +3,11 @@ package com.uco.pilae.pilae.operaciones;
 import com.uco.pilae.pilae.entity.MarcadorEntity;
 import com.uco.pilae.pilae.entity.PartidoEntity;
 import com.uco.pilae.pilae.entity.PosicionEntity;
-import com.uco.pilae.pilae.entity.TorneoEntity;
 import com.uco.pilae.pilae.repository.MarcadorRepository;
 import com.uco.pilae.pilae.repository.PartidoRepository;
 import com.uco.pilae.pilae.repository.PosicionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Component
@@ -86,7 +80,6 @@ public class JugarPartido {
         else
             marcadorEntity.setEquipoGanador(partido.getFkEquipoVisitante().getNombre());
     }
-
 
 
 }

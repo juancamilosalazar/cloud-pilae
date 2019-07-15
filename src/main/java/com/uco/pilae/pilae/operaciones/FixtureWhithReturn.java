@@ -1,4 +1,5 @@
 package com.uco.pilae.pilae.operaciones;
+
 import com.uco.pilae.pilae.entity.EquipoEntity;
 import com.uco.pilae.pilae.entity.PartidoEntity;
 import com.uco.pilae.pilae.entity.TorneoEntity;
@@ -6,8 +7,6 @@ import com.uco.pilae.pilae.repository.PartidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -18,38 +17,27 @@ public class FixtureWhithReturn {
     @Autowired
     private PartidoRepository partidoRepository;
 
-    static public class Partido
-    {
-        public int local = -1, visitante = -1;
-    }
-    private static Partido[][] calcularLigaNumEquiposPar(HashMap equipos)
-    {
+    private static Partido[][] calcularLigaNumEquiposPar(HashMap equipos) {
         int numRondas = equipos.size() - 1;
         int numPartidosPorRonda = equipos.size() / 2;
 
         Partido[][] rondas = new Partido[numRondas][numPartidosPorRonda];
 
-        for (int i = 0, k = 0; i < numRondas; i ++)
-        {
-            for (int j = 0; j < numPartidosPorRonda; j ++)
-            {
+        for (int i = 0, k = 0; i < numRondas; i++) {
+            for (int j = 0; j < numPartidosPorRonda; j++) {
                 rondas[i][j] = new Partido();
                 rondas[i][j].local = k;
-                k ++;
+                k++;
 
                 if (k == numRondas)
                     k = 0;
             }
         }
 
-        for (int i = 0; i < numRondas; i ++)
-        {
-            if (i % 2 == 0)
-            {
+        for (int i = 0; i < numRondas; i++) {
+            if (i % 2 == 0) {
                 rondas[i][0].visitante = equipos.size() - 1;
-            }
-            else
-            {
+            } else {
                 rondas[i][0].visitante = rondas[i][0].local;
                 rondas[i][0].local = equipos.size() - 1;
             }
@@ -58,13 +46,11 @@ public class FixtureWhithReturn {
         int equipoMasAlto = equipos.size() - 1;
         int equipoImparMasAlto = equipoMasAlto - 1;
 
-        for (int i = 0, k = equipoImparMasAlto; i < numRondas; i ++)
-        {
-            for (int j = 1; j < numPartidosPorRonda; j ++)
-            {
+        for (int i = 0, k = equipoImparMasAlto; i < numRondas; i++) {
+            for (int j = 1; j < numPartidosPorRonda; j++) {
                 rondas[i][j].visitante = k;
 
-                k --;
+                k--;
 
                 if (k == -1)
                     k = equipoImparMasAlto;
@@ -74,24 +60,20 @@ public class FixtureWhithReturn {
         return rondas;
     }
 
-    private static Partido[][] calcularLigaNumEquiposImpar(HashMap equipos)
-    {
+    private static Partido[][] calcularLigaNumEquiposImpar(HashMap equipos) {
         int numRondas = equipos.size();
         int numPartidosPorRonda = equipos.size() / 2;
 
         Partido[][] rondas = new Partido[numRondas][numPartidosPorRonda];
 
-        for (int i = 0, k = 0; i < numRondas; i ++)
-        {
-            for (int j = -1; j < numPartidosPorRonda; j ++)
-            {
-                if (j >= 0)
-                {
+        for (int i = 0, k = 0; i < numRondas; i++) {
+            for (int j = -1; j < numPartidosPorRonda; j++) {
+                if (j >= 0) {
                     rondas[i][j] = new Partido();
                     rondas[i][j].local = k;
                 }
 
-                k ++;
+                k++;
 
                 if (k == numRondas)
                     k = 0;
@@ -100,13 +82,11 @@ public class FixtureWhithReturn {
 
         int equipoMasAlto = equipos.size() - 1;
 
-        for (int i = 0, k = equipoMasAlto; i < numRondas; i ++)
-        {
-            for (int j = 0; j < numPartidosPorRonda; j ++)
-            {
+        for (int i = 0, k = equipoMasAlto; i < numRondas; i++) {
+            for (int j = 0; j < numPartidosPorRonda; j++) {
                 rondas[i][j].visitante = k;
 
-                k --;
+                k--;
 
                 if (k == -1)
                     k = equipoMasAlto;
@@ -116,22 +96,19 @@ public class FixtureWhithReturn {
         return rondas;
     }
 
-    public Partido[][] calcularLiga(HashMap<Integer,EquipoEntity> equipos)
-    {
+    public Partido[][] calcularLiga(HashMap<Integer, EquipoEntity> equipos) {
 
         if (equipos.size() % 2 == 0)
             return calcularLigaNumEquiposPar(equipos);
         else
             return calcularLigaNumEquiposImpar(equipos);
     }
-    public void mostrarPartidos(Partido[][] rondas, HashMap<Integer, EquipoEntity> equipos, TorneoEntity id)
-    {
+
+    public void mostrarPartidos(Partido[][] rondas, HashMap<Integer, EquipoEntity> equipos, TorneoEntity id) {
         final Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        for (int i = 0; i < rondas.length; i ++)
-        {
-            for (int j = 0; j < rondas[i].length; j ++)
-            {
-                PartidoEntity partidoEntity= new PartidoEntity();
+        for (int i = 0; i < rondas.length; i++) {
+            for (int j = 0; j < rondas[i].length; j++) {
+                PartidoEntity partidoEntity = new PartidoEntity();
                 partidoEntity.setRonda("Ronda " + (i + 1));
                 partidoEntity.setFechaDelpartido(calendar.getTime());
                 partidoEntity.setFkTorneo(id);
@@ -147,12 +124,10 @@ public class FixtureWhithReturn {
 
         }
 
-        for (int i = 0; i < rondas.length; i ++)
-        {
+        for (int i = 0; i < rondas.length; i++) {
 
-            for (int j = 0; j < rondas[i].length; j ++)
-            {
-                PartidoEntity partidoEntity= new PartidoEntity();
+            for (int j = 0; j < rondas[i].length; j++) {
+                PartidoEntity partidoEntity = new PartidoEntity();
                 partidoEntity.setRonda("Ronda " + (i + 1));
                 partidoEntity.setFechaDelpartido(calendar.getTime());
                 partidoEntity.setFkTorneo(id);
@@ -165,6 +140,10 @@ public class FixtureWhithReturn {
 
 
         }
+    }
+
+    static public class Partido {
+        public int local = -1, visitante = -1;
     }
 
 

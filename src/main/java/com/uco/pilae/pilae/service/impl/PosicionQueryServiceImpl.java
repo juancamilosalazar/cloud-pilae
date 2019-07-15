@@ -1,12 +1,10 @@
 package com.uco.pilae.pilae.service.impl;
 
 import com.uco.pilae.pilae.entity.PosicionEntity;
-import com.uco.pilae.pilae.entity.TorneoEntity;
 import com.uco.pilae.pilae.repository.PosicionRepository;
 import com.uco.pilae.pilae.service.PosicionQueryService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;

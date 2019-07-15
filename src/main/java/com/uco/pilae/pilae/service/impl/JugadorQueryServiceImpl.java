@@ -18,7 +18,7 @@ public class JugadorQueryServiceImpl implements JugadorQueryService {
     private final EquipoRepository equipoRepository;
 
     public JugadorQueryServiceImpl(final JugadorRepository repository, final EquipoRepository equipoRepository) {
-        this.repository=repository;
+        this.repository = repository;
         this.equipoRepository = equipoRepository;
     }
 
@@ -45,7 +45,7 @@ public class JugadorQueryServiceImpl implements JugadorQueryService {
     @Override
     public JugadorEntity crear(JugadorEntity newJugador, Long equipoId) {
         return equipoRepository.findById(equipoId)
-                .map(equipoEntity-> {
+                .map(equipoEntity -> {
                     newJugador.setFkEquipo(equipoEntity);
                     return newJugador;
                 })

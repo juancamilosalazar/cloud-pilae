@@ -1,6 +1,5 @@
 package com.uco.pilae.pilae.service.impl;
 
-import com.uco.pilae.pilae.entity.DeporteEntity;
 import com.uco.pilae.pilae.entity.TorneoEntity;
 import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
 import com.uco.pilae.pilae.repository.DeporteRepository;

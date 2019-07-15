@@ -1,14 +1,11 @@
 package com.uco.pilae.pilae.operaciones;
-
 import com.uco.pilae.pilae.entity.EquipoEntity;
 import com.uco.pilae.pilae.entity.PartidoEntity;
 import com.uco.pilae.pilae.entity.TorneoEntity;
 import com.uco.pilae.pilae.repository.PartidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -17,10 +14,6 @@ public class FixtureNotReturn {
 
     @Autowired
     private PartidoRepository partidoRepository;
-
-    static public class Partido {
-        public int local = -1, visitante = -1;
-    }
 
     private static FixtureWhithReturn.Partido[][] calcularLigaNumEquiposPar(HashMap equipos) {
         int numRondas = equipos.size() - 1;
@@ -125,5 +118,9 @@ public class FixtureNotReturn {
                 partidoRepository.save(partidoEntity);
             }
         }
+    }
+
+    static public class Partido {
+        public int local = -1, visitante = -1;
     }
 }

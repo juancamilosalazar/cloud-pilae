@@ -2,9 +2,7 @@ package com.uco.pilae.pilae.controller;
 
 
 import com.uco.pilae.pilae.entity.DeporteEntity;
-import com.uco.pilae.pilae.entity.EquipoEntity;
 import com.uco.pilae.pilae.model.Deporte;
-import com.uco.pilae.pilae.model.Equipo;
 import com.uco.pilae.pilae.service.DeporteQueryService;
 import com.uco.pilae.pilae.util.DataConversionUtil;
 import org.modelmapper.ModelMapper;
@@ -13,7 +11,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Null;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -33,21 +30,21 @@ public class DeporteController {
     }
 
     @GetMapping
-    public List<Deporte> findAll(){
+    public List<Deporte> findAll() {
         return queryService.findAll()
                 .parallelStream()
-                .map(entity-> modelMapper.map(entity,Deporte.class))
+                .map(entity -> modelMapper.map(entity, Deporte.class))
                 .collect(Collectors.toList());
     }
 
     @PostMapping
-    public ResponseEntity<String> crear(@RequestBody final Deporte deporte){
+    public ResponseEntity<String> crear(@RequestBody final Deporte deporte) {
         try {
-            DeporteEntity deporteEntity= modelMapper.map(Objects.requireNonNull(deporte, "Ocurrio un error al procesar el Body de la peticion"), DeporteEntity.class);
+            DeporteEntity deporteEntity = modelMapper.map(Objects.requireNonNull(deporte, "Ocurrio un error al procesar el Body de la peticion"), DeporteEntity.class);
             DeporteEntity newDeporte = queryService.save(deporteEntity);
             return buildResponse(newDeporte);
-        }catch (final Exception ex){
-              return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+        } catch (final Exception ex) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
                     .body(ex.getMessage());
         }
     }

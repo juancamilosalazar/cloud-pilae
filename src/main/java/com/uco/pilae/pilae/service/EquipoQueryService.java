@@ -1,7 +1,6 @@
 package com.uco.pilae.pilae.service;
-import com.uco.pilae.pilae.entity.EquipoEntity;
 
-import java.util.List;
+import com.uco.pilae.pilae.entity.EquipoEntity;
 
 public interface EquipoQueryService extends QueryServiceBase<EquipoEntity> {
 

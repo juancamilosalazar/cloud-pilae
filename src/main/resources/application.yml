@@ -15,6 +15,10 @@ spring:
     schemas: public
     locations: classpath:db/migration,classpath:db/update
 
+okta:
+  oauth2:
+    client-id: 0oawgjdsnNuSuIS8T356
+    issuer: https://dev-583268.okta.com/oauth2/default
 
 logging:
   level:

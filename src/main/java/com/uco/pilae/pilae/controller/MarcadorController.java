@@ -17,13 +17,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/pilae/marcador")
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT})
 public class MarcadorController {
 
     private final MarcadorQueryService queryService;
     private final ModelMapper modelMapper;
     private final DataConversionUtil dataConversion;
     private final PartidoRepository partidoRepository;
+
     @Autowired
     public MarcadorController(MarcadorQueryService queryService, final ModelMapper modelMapper, DataConversionUtil dataConversion, PartidoRepository partidoRepository) {
         this.queryService = queryService;
@@ -33,25 +34,25 @@ public class MarcadorController {
     }
 
     @PutMapping(params = {"id"})
-    public ResponseEntity<String> jugarPartido(final @RequestBody Marcador marcador, @RequestParam(value = "id") final Long id){
+    public ResponseEntity<String> jugarPartido(final @RequestBody Marcador marcador, @RequestParam(value = "id") final Long id) {
         MarcadorEntity marc = queryService.jugarPartido(partidoRepository.findById(id)
-                        .orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id))
-                ,marcador.getEquipoLocalMrc()
-                ,marcador.getEquipoVisitanteMrc());
+                        .orElseThrow(() -> new ResourceNotFoundException("partido_tbl", "id_partido", id))
+                , marcador.getEquipoLocalMrc()
+                , marcador.getEquipoVisitanteMrc());
         return buildResponse(marc);
     }
 
     @GetMapping(params = {"id"})
     public ResponseEntity<String> marcador(@RequestParam(value = "id") final Long id) {
-        MarcadorEntity marcador = queryService.findByFkPartido(partidoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("partido_tbl","id_partido",id)));
+        MarcadorEntity marcador = queryService.findByFkPartido(partidoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("partido_tbl", "id_partido", id)));
         return buildResponse(marcador);
     }
 
     @GetMapping(params = {"idTorneo"})
-    public List<Marcador> findByTorneo(@RequestParam(value = "idTorneo") final Long id){
+    public List<Marcador> findByTorneo(@RequestParam(value = "idTorneo") final Long id) {
         return queryService.findByFkTorneo(id)
                 .parallelStream()
-                .map(entity-> modelMapper.map(entity,Marcador.class))
+                .map(entity -> modelMapper.map(entity, Marcador.class))
                 .collect(Collectors.toList());
     }
 

@@ -2,8 +2,6 @@ package com.uco.pilae.pilae.model;
 
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor

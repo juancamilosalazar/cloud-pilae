@@ -1,12 +1,12 @@
 package com.uco.pilae.pilae.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class TorneoEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_torneo",nullable = false)
+    @Column(name = "id_torneo", nullable = false)
     private Long codigo;
     @Column(name = "nombre")
     private String nombre;

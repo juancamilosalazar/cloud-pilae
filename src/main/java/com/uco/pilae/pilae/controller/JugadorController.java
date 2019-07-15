@@ -1,4 +1,5 @@
 package com.uco.pilae.pilae.controller;
+
 import com.uco.pilae.pilae.entity.JugadorEntity;
 import com.uco.pilae.pilae.model.Jugador;
 import com.uco.pilae.pilae.service.JugadorQueryService;
@@ -34,44 +35,46 @@ public class JugadorController {
 
 
     @GetMapping
-    public List<Jugador> findAll(){
+    public List<Jugador> findAll() {
         return queryService.findAll()
                 .parallelStream()
-                .map(jugador-> modelMapper.map(jugador, Jugador.class))
+                .map(jugador -> modelMapper.map(jugador, Jugador.class))
                 .collect(Collectors.toList());
     }
+
     @GetMapping(params = {"id"})
-    public List<Jugador> findByEquipo(@RequestParam(value = "id")final Long idEquipo){
+    public List<Jugador> findByEquipo(@RequestParam(value = "id") final Long idEquipo) {
         return queryService.findByEquipo(idEquipo)
                 .parallelStream()
-                .map(jugador-> modelMapper.map(jugador, Jugador.class))
+                .map(jugador -> modelMapper.map(jugador, Jugador.class))
                 .collect(Collectors.toList());
     }
 
     @PostMapping(params = {"equipoId"})
-    public ResponseEntity<String> crear(@RequestParam(value = "equipoId") final Long equipoId,@RequestBody final Jugador jugador){
+    public ResponseEntity<String> crear(@RequestParam(value = "equipoId") final Long equipoId, @RequestBody final Jugador jugador) {
         try {
-            final JugadorEntity newJugador= modelMapper.map(Objects.requireNonNull(jugador, "Ocurrio un error al procesar el Body de la peticion"),JugadorEntity.class);
-            final JugadorEntity created = queryService.crear(newJugador,equipoId);
+            final JugadorEntity newJugador = modelMapper.map(Objects.requireNonNull(jugador, "Ocurrio un error al procesar el Body de la peticion"), JugadorEntity.class);
+            final JugadorEntity created = queryService.crear(newJugador, equipoId);
             return buildResponse(created);
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
                     .body(ex.getMessage());
         }
     }
+
     @PutMapping(params = {"id"})
-    public ResponseEntity<String> update(@RequestParam(value = "id") final Long id,@RequestBody final Jugador newJugador){
+    public ResponseEntity<String> update(@RequestParam(value = "id") final Long id, @RequestBody final Jugador newJugador) {
         try {
             final Calendar calendar = Calendar.getInstance(Locale.getDefault());
-            JugadorEntity old= queryService.findById(id);
+            JugadorEntity old = queryService.findById(id);
             old.setNombre(newJugador.getNombre());
             calendar.setTimeInMillis(newJugador.getFechaNacimiento());
             old.setFechaNacimiento(calendar.getTime());
             old.setIdentificacion(newJugador.getIdentificacion());
             final JugadorEntity jugadorEntity = queryService.save(old);
             return buildResponse(jugadorEntity);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
                     .body(ex.getMessage());
         }
@@ -79,7 +82,7 @@ public class JugadorController {
     }
 
     @DeleteMapping(params = {"id"})
-    public ResponseEntity delete(@RequestParam (value = "id")final Long id){
+    public ResponseEntity delete(@RequestParam(value = "id") final Long id) {
         final JugadorEntity old = queryService.findById(id);
         queryService.delete(old);
         return buildResponse(old);

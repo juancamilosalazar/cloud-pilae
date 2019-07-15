@@ -1,6 +1,6 @@
 package com.uco.pilae.pilae.exceptions;
 
-import  org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
@@ -9,7 +9,7 @@ public class ResourceNotFoundException extends RuntimeException {
     private String columna;
     private Object valor;
 
-    public ResourceNotFoundException( String tabla, String columna, Object valor) {
+    public ResourceNotFoundException(String tabla, String columna, Object valor) {
         super(String.format("%s inexistente con %s : '%s'", tabla, columna, valor));
         this.tabla = tabla;
         this.columna = columna;

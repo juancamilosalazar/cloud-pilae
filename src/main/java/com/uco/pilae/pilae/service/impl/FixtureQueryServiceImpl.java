@@ -4,6 +4,7 @@ import com.uco.pilae.pilae.entity.EquipoEntity;
 import com.uco.pilae.pilae.entity.PartidoEntity;
 import com.uco.pilae.pilae.entity.TorneoEntity;
 import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
+import com.uco.pilae.pilae.model.Partido;
 import com.uco.pilae.pilae.operaciones.FixtureNotReturn;
 import com.uco.pilae.pilae.operaciones.FixtureWhithReturn;
 import com.uco.pilae.pilae.operaciones.JugarPartido;
@@ -22,6 +23,7 @@ public class FixtureQueryServiceImpl implements FixtureQueryService {
     private final JugarPartido jugarPartido;
     private final FixtureNotReturn fixtureNotReturn;
     private final TorneoRepository torneoRepository;
+
     public FixtureQueryServiceImpl(final FixtureWhithReturn fixtureWhithReturn, final PartidoRepository repository, final JugarPartido jugarPartido, FixtureNotReturn fixtureNotReturn, TorneoRepository torneoRepository) {
         this.fixtureWhithReturn = fixtureWhithReturn;
         this.repository = repository;
@@ -61,7 +63,7 @@ public class FixtureQueryServiceImpl implements FixtureQueryService {
     }
 
     @Override
-    public PartidoEntity crear(PartidoEntity newEntity, Long torneoId) {
+    public PartidoEntity crear(final PartidoEntity newEntity, final Long torneoId) {
         return torneoRepository.findById(torneoId)
                 .map(torneoEntity -> {
                     newEntity.setFkTorneo(torneoEntity);
@@ -99,9 +101,19 @@ public class FixtureQueryServiceImpl implements FixtureQueryService {
         repository.deleteByfkTorneo(fkTorneo);
     }
 
-
-
-
+    @Override
+    public PartidoEntity update(Long id, Partido partido) {
+        return repository.findById(id)
+                .map(x -> {
+                    Date date = new Date(partido.getFechaDelPartido());
+                    x.setFechaDelpartido(date);
+                    x.setRonda(partido.getRonda());
+                    x.setIdaVuelta(partido.getIdaVuelta());
+                    return x;
+                })
+                .map(repository::saveAndFlush)
+                .orElseThrow(() -> new ResourceNotFoundException("torneo_tbl", "torneo_tbl", id));
+    }
 
 
 }

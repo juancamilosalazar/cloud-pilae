@@ -1,12 +1,11 @@
 package com.uco.pilae.pilae.entity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -17,7 +16,7 @@ import java.util.Date;
 @Table(name = "partido_tbl")
 public class PartidoEntity {
     @Id
-    @Column(name = "id_partido",nullable = false)
+    @Column(name = "id_partido", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
     @Column(name = "fecha_partido")

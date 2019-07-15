@@ -11,7 +11,8 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface MarcadorRepository extends JpaRepository<MarcadorEntity,Long> {
+public interface MarcadorRepository extends JpaRepository<MarcadorEntity, Long> {
     MarcadorEntity findByFkPartido(final PartidoEntity partidoEntity);
+
     List<MarcadorEntity> findByFkPartidoFkTorneoCodigo(final Long id);
 }

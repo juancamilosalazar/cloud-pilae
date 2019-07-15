@@ -19,8 +19,9 @@ public class EquipoQueryServiceImpl implements EquipoQueryService {
     private final EquipoRepository repository;
     private final TorneoRepository torneoRepository;
     private final PosicionRepository posicionRepository;
+
     @Autowired
-    public EquipoQueryServiceImpl(final EquipoRepository repository, final TorneoRepository torneoRepository,final PosicionRepository posicionRepository) {
+    public EquipoQueryServiceImpl(final EquipoRepository repository, final TorneoRepository torneoRepository, final PosicionRepository posicionRepository) {
         this.repository = repository;
         this.torneoRepository = torneoRepository;
         this.posicionRepository = posicionRepository;
@@ -61,18 +62,18 @@ public class EquipoQueryServiceImpl implements EquipoQueryService {
 
     @Override
     public void initPartido(EquipoEntity equipoEntity) {
-            PosicionEntity posicionEntity = new PosicionEntity();
-            posicionEntity.setPuntos(0);
-            posicionEntity.setPartidosEmpatados(0);
-            posicionEntity.setPartidosPerdidos(0);
-            posicionEntity.setPartidosGanados(0);
-            posicionEntity.setPartidosJugados(0);
-            posicionEntity.setGolesDiferencia(0);
-            posicionEntity.setGolesFavor(0);
-            posicionEntity.setGolesContra(0);
-            posicionEntity.setFkTorneo(equipoEntity.getFkTorneo());
-            posicionEntity.setFkEquipo(equipoEntity);
-            posicionRepository.save(posicionEntity);
+        PosicionEntity posicionEntity = new PosicionEntity();
+        posicionEntity.setPuntos(0);
+        posicionEntity.setPartidosEmpatados(0);
+        posicionEntity.setPartidosPerdidos(0);
+        posicionEntity.setPartidosGanados(0);
+        posicionEntity.setPartidosJugados(0);
+        posicionEntity.setGolesDiferencia(0);
+        posicionEntity.setGolesFavor(0);
+        posicionEntity.setGolesContra(0);
+        posicionEntity.setFkTorneo(equipoEntity.getFkTorneo());
+        posicionEntity.setFkEquipo(equipoEntity);
+        posicionRepository.save(posicionEntity);
     }
 
     @Override
