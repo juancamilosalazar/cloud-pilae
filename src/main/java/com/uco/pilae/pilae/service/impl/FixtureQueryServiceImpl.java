@@ -34,7 +34,7 @@ public class FixtureQueryServiceImpl implements FixtureQueryService {
 
 
     @Override
-    public void generateFixture(List<EquipoEntity> equipos, TorneoEntity id) {
+    public List<PartidoEntity> generateFixture(List<EquipoEntity> equipos, TorneoEntity id) {
         HashMap<Integer, EquipoEntity> generateFixture = new HashMap<>();
         int idEquipo = 0;
         for (EquipoEntity equipo : equipos) {
@@ -44,12 +44,12 @@ public class FixtureQueryServiceImpl implements FixtureQueryService {
             generateFixture.put(idEquipo, equipo);
         }
         //calcula el fixture con el hashmap generado
-        fixtureWhithReturn.mostrarPartidos(fixtureWhithReturn.calcularLiga(generateFixture), generateFixture, id);
+        return fixtureWhithReturn.mostrarPartidos(fixtureWhithReturn.calcularLiga(generateFixture), generateFixture, id);
 
     }
 
     @Override
-    public void generateFixtureNotReturn(List<EquipoEntity> equipos, TorneoEntity id) {
+    public List<PartidoEntity> generateFixtureNotReturn(List<EquipoEntity> equipos, TorneoEntity id) {
         HashMap<Integer, EquipoEntity> generateFixture = new HashMap<>();
         int idEquipo = 0;
         for (EquipoEntity equipo : equipos) {
@@ -59,7 +59,7 @@ public class FixtureQueryServiceImpl implements FixtureQueryService {
             generateFixture.put(idEquipo, equipo);
         }
         //calcula el fixture con el hashmap generado
-        fixtureNotReturn.mostrarPartidos(fixtureWhithReturn.calcularLiga(generateFixture), generateFixture, id);
+        return fixtureNotReturn.mostrarPartidos(fixtureWhithReturn.calcularLiga(generateFixture), generateFixture, id);
     }
 
     @Override

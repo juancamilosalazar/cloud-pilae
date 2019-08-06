@@ -43,7 +43,7 @@ public class MarcadorController {
     }
 
     @GetMapping(params = {"id"})
-    public ResponseEntity<String> marcador(@RequestParam(value = "id") final Long id) {
+    public ResponseEntity<String> findMarcadorByPartido(@RequestParam(value = "id") final Long id) {
         MarcadorEntity marcador = queryService.findByFkPartido(partidoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("partido_tbl", "id_partido", id)));
         return buildResponse(marcador);
     }

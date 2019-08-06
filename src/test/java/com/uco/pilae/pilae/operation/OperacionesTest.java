@@ -1,8 +1,9 @@
-package com.uco.pilae.pilae;
+package com.uco.pilae.pilae.operation;
 
 import com.uco.pilae.pilae.entity.*;
 import com.uco.pilae.pilae.operaciones.JugarPartido;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class OperacionesTest {
@@ -131,14 +132,15 @@ public class OperacionesTest {
         JugarPartido jugarPartido = new JugarPartido();
         EquipoEntity equipoLocal = new EquipoEntity();
         EquipoEntity equipoVisitante= new EquipoEntity();
-        PosicionEntity poscionLocal= new PosicionEntity();
+        PosicionEntity posicionLocal= new PosicionEntity();
         PosicionEntity posicionVisitante= new PosicionEntity();
-        poscionLocal.setFkEquipo(equipoLocal);
+        posicionLocal.setFkEquipo(equipoLocal);
         posicionVisitante.setFkEquipo(equipoVisitante);
         partidoEntity.setFkEquipoLocal(equipoLocal);
         partidoEntity.setFkEquipoVisitante(equipoVisitante);
-        jugarPartido.validateEquipoGanadorPosicion(partidoEntity,2,2,poscionLocal,posicionVisitante);
+        jugarPartido.validateEquipoGanadorPosicion(partidoEntity,2,2,posicionLocal,posicionVisitante);
         Assert.assertEquals(posicionVisitante.getPartidosEmpatados(),1);
-        Assert.assertEquals(posicionVisitante.getPartidosEmpatados(),1);
+        Assert.assertEquals(posicionLocal
+                .getPartidosEmpatados(),1);
     }
 }

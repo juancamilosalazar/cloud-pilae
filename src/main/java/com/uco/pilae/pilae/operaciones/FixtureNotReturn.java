@@ -1,13 +1,13 @@
 package com.uco.pilae.pilae.operaciones;
+
 import com.uco.pilae.pilae.entity.EquipoEntity;
 import com.uco.pilae.pilae.entity.PartidoEntity;
 import com.uco.pilae.pilae.entity.TorneoEntity;
 import com.uco.pilae.pilae.repository.PartidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Locale;
+
+import java.util.*;
 
 @Component
 public class FixtureNotReturn {
@@ -102,9 +102,9 @@ public class FixtureNotReturn {
             return calcularLigaNumEquiposImpar(equipos);
     }
 
-    public void mostrarPartidos(FixtureWhithReturn.Partido[][] rondas, HashMap<Integer, EquipoEntity> equipos, TorneoEntity id) {
+    public List<PartidoEntity> mostrarPartidos(FixtureWhithReturn.Partido[][] rondas, HashMap<Integer, EquipoEntity> equipos, TorneoEntity id) {
         final Calendar calendar = Calendar.getInstance(Locale.getDefault());
-
+        List<PartidoEntity> partidoEntities = new ArrayList<>();
         for (int i = 0; i < rondas.length; i++) {
             for (int j = 0; j < rondas[i].length; j++) {
                 PartidoEntity partidoEntity = new PartidoEntity();
@@ -116,8 +116,10 @@ public class FixtureNotReturn {
                 partidoEntity.setEstadoPartido("sin jugar");
                 partidoEntity.setIdaVuelta("solo ida");
                 partidoRepository.save(partidoEntity);
+                partidoEntities.add(partidoEntity);
             }
         }
+        return partidoEntities;
     }
 
     static public class Partido {

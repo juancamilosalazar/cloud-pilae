@@ -7,9 +7,7 @@ import com.uco.pilae.pilae.repository.PartidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Locale;
+import java.util.*;
 
 @Component
 public class FixtureWhithReturn {
@@ -104,8 +102,9 @@ public class FixtureWhithReturn {
             return calcularLigaNumEquiposImpar(equipos);
     }
 
-    public void mostrarPartidos(Partido[][] rondas, HashMap<Integer, EquipoEntity> equipos, TorneoEntity id) {
+    public List<PartidoEntity> mostrarPartidos(Partido[][] rondas, HashMap<Integer, EquipoEntity> equipos, TorneoEntity id) {
         final Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        List<PartidoEntity> partidoEntities = new ArrayList<>();
         for (int i = 0; i < rondas.length; i++) {
             for (int j = 0; j < rondas[i].length; j++) {
                 PartidoEntity partidoEntity = new PartidoEntity();
@@ -117,8 +116,7 @@ public class FixtureWhithReturn {
                 partidoEntity.setIdaVuelta("ida");
                 partidoEntity.setEstadoPartido("sin jugar");
                 partidoRepository.save(partidoEntity);
-
-
+                partidoEntities.add(partidoEntity);
             }
 
 
@@ -136,10 +134,12 @@ public class FixtureWhithReturn {
                 partidoEntity.setIdaVuelta("vuelta");
                 partidoEntity.setEstadoPartido("sin jugar");
                 partidoRepository.save(partidoEntity);
+                partidoEntities.add(partidoEntity);
             }
 
 
         }
+        return partidoEntities;
     }
 
     static public class Partido {

@@ -6,6 +6,7 @@ import com.uco.pilae.pilae.entity.PartidoEntity;
 import com.uco.pilae.pilae.entity.TorneoEntity;
 import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
 import com.uco.pilae.pilae.model.Partido;
+import com.uco.pilae.pilae.model.Torneo;
 import com.uco.pilae.pilae.repository.EquipoRepository;
 import com.uco.pilae.pilae.repository.TorneoRepository;
 import com.uco.pilae.pilae.service.FixtureQueryService;
@@ -39,19 +40,24 @@ public class PartidoController {
     }
 
     @GetMapping(params = {"idTorneo"})
-    public void saveFixtureWithReturn(@RequestParam(value = "idTorneo") final Long torneoId) {
+    public List<Partido> saveFixtureWithReturn(@RequestParam(value = "idTorneo") final Long torneoId) {
         TorneoEntity torneo = torneoRepository.findById(torneoId).orElseThrow(() -> new ResourceNotFoundException("torneo_tbl", "torneo_tbl", torneoId));
         queryService.deleteByFkTorneo(torneo);
         List<EquipoEntity> equipos = equipoRepository.findByFkTorneo(torneo);
-        queryService.generateFixture(equipos, torneo);
+        return queryService.generateFixture(equipos, torneo)
+                .parallelStream()
+                .map(x->modelMapper.map(x,Partido.class))
+                .collect(Collectors.toList());
     }
 
     @GetMapping(params = {"idNotReturn"})
-    public void saveFixtureWithNotReturn(@RequestParam(value = "idNotReturn") final Long torneoId) {
+    public List<Partido> saveFixtureWithNotReturn(@RequestParam(value = "idNotReturn") final Long torneoId) {
         TorneoEntity torneo = torneoRepository.findById(torneoId).orElseThrow(() -> new ResourceNotFoundException("torneo_tbl", "torneo_tbl", torneoId));
         queryService.deleteByFkTorneo(torneo);
         List<EquipoEntity> equipos = equipoRepository.findByFkTorneo(torneo);
-        queryService.generateFixtureNotReturn(equipos, torneo);
+       return queryService.generateFixtureNotReturn(equipos, torneo)
+               .parallelStream().map(x->modelMapper.map(x,Partido.class))
+               .collect(Collectors.toList());
     }
 
     @GetMapping(params = {"id"})

@@ -21,13 +21,11 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT})
 public class TorneoController {
 
-    private final TorneoRepository torneoRepository;
     private final TorneoQueryService queryService;
     private final ModelMapper modelMapper;
     private final DataConversionUtil dataConversion;
 
-    public TorneoController(TorneoRepository torneoRepository, TorneoQueryService queryService, ModelMapper modelMapper, DataConversionUtil dataConversion) {
-        this.torneoRepository = torneoRepository;
+    public TorneoController(TorneoQueryService queryService, ModelMapper modelMapper, DataConversionUtil dataConversion) {
         this.queryService = queryService;
         this.modelMapper = modelMapper;
         this.dataConversion = dataConversion;

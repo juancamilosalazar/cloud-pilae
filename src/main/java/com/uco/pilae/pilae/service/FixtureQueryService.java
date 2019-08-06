@@ -8,8 +8,8 @@ import com.uco.pilae.pilae.model.Partido;
 import java.util.List;
 
 public interface FixtureQueryService extends QueryServiceBase<PartidoEntity> {
-    void generateFixture(final List<EquipoEntity> equipos, final TorneoEntity id);
-    void generateFixtureNotReturn(final List<EquipoEntity> equipos, final TorneoEntity id);
+    List<PartidoEntity> generateFixture(final List<EquipoEntity> equipos, final TorneoEntity id);
+    List<PartidoEntity> generateFixtureNotReturn(final List<EquipoEntity> equipos, final TorneoEntity id);
     PartidoEntity crear(final PartidoEntity newEntity, final Long torneoId);
     List<PartidoEntity> findAllByTorneo(final Long id);
     void deleteByFkTorneo(final TorneoEntity fkTorneo);

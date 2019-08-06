@@ -1,8 +1,4 @@
-FROM anapsix/alpine-java:8
-WORKDIR /app
-RUN apk add --no-cache tzdata
-ENV TZ America/Bogota
-ADD api/build/libs/*.jar /app/
-RUN mv *.jar app.jar
-EXPOSE 8443
-CMD java -jar /app/app.jar
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+COPY build/libs/pilae-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
