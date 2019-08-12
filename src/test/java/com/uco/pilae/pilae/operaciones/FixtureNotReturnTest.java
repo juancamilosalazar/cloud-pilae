@@ -30,8 +30,14 @@ public class FixtureNotReturnTest {
     }
 
     @Test
-    public void generateFixtureEquiposPar(){
+    public void generateFixtureEquiposParRondasPar(){
         HashMap<Integer, EquipoEntity> generateFixture = TestDataProviderController.buildHashMapFixtureEquiposPar();
+        List<PartidoEntity> partidoEntities = base.mostrarPartidos(base.calcularLiga(generateFixture),generateFixture,TestDataProviderController.buildTorneoEntity());
+        assertNotNull(partidoEntities);
+    }
+    @Test
+    public void generateFixtureEquiposParRondasImpar(){
+        HashMap<Integer, EquipoEntity> generateFixture = TestDataProviderController.buildHashMapFixtureEquiposParRondasImpar();
         List<PartidoEntity> partidoEntities = base.mostrarPartidos(base.calcularLiga(generateFixture),generateFixture,TestDataProviderController.buildTorneoEntity());
         assertNotNull(partidoEntities);
     }

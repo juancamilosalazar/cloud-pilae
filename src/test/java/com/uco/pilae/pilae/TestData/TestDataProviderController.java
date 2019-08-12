@@ -4,6 +4,7 @@ import com.uco.pilae.pilae.entity.*;
 import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
 import com.uco.pilae.pilae.model.*;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -228,7 +229,7 @@ public class TestDataProviderController {
         return posicionEntity;
     }
 
-    private static Date buildDateRandom(final Long origin) {
+    public static Date buildDateRandom(final Long origin) {
         return new Date(ThreadLocalRandom.current().nextLong(origin, System.currentTimeMillis()));
     }
 
@@ -239,6 +240,27 @@ public class TestDataProviderController {
         EquipoEntity equipoEntity2 = buildEquipoEntity();
         equipoEntityList.add(equipoEntity1);
         equipoEntityList.add(equipoEntity2);
+        int idEquipo = 0;
+        for (EquipoEntity equipo : equipoEntityList) {
+            //para cada equipo le agrega un id que ayudara a generar el fixture
+            idEquipo++;
+            //inserta el equipo con el id generado para el fixture y el id
+            hashMap.put(idEquipo, equipo);
+        }
+        return hashMap;
+    }
+
+    public static HashMap<Integer, EquipoEntity> buildHashMapFixtureEquiposParRondasImpar() {
+        HashMap<Integer, EquipoEntity> hashMap = new HashMap<>();
+        List<EquipoEntity> equipoEntityList = new ArrayList<>();
+        EquipoEntity equipoEntity1 = buildEquipoEntity();
+        EquipoEntity equipoEntity2 = buildEquipoEntity();
+        EquipoEntity equipoEntity3 = buildEquipoEntity();
+        EquipoEntity equipoEntity4 = buildEquipoEntity();
+        equipoEntityList.add(equipoEntity1);
+        equipoEntityList.add(equipoEntity2);
+        equipoEntityList.add(equipoEntity3);
+        equipoEntityList.add(equipoEntity4);
         int idEquipo = 0;
         for (EquipoEntity equipo : equipoEntityList) {
             //para cada equipo le agrega un id que ayudara a generar el fixture
@@ -287,7 +309,34 @@ public class TestDataProviderController {
 
     public static ResourceNotFoundException buildNotFoundException() {
         ResourceNotFoundException exception;
-        exception = new ResourceNotFoundException("Marcador","Codigo",2L);
+        exception = new ResourceNotFoundException("Marcador", "Codigo", 2L);
         return exception;
+    }
+
+    public static IOException buildIOException() {
+        IOException exception = new IOException();
+        return exception;
+    }
+
+
+    public static Long buildLongDateRandom(long InitialDate) {
+        final Long today = System.currentTimeMillis();
+        return ThreadLocalRandom.current().nextLong(InitialDate, today);
+    }
+
+    public static Posicion builposicion() {
+        final Posicion posicion = new Posicion();
+        posicion.setCodigo(ThreadLocalRandom.current().nextLong(1, 50));
+        posicion.setFkEquipo(buildEquipo());
+        posicion.setFkTorneo(buildTorneo());
+        posicion.setGolesContra(ThreadLocalRandom.current().nextInt(0, 10));
+        posicion.setGolesFavor(ThreadLocalRandom.current().nextInt(0, 10));
+        posicion.setGolesDiferencia(ThreadLocalRandom.current().nextInt(-10, 10));
+        posicion.setPartidosJugados(ThreadLocalRandom.current().nextInt(0, 10));
+        posicion.setPartidosGanados(ThreadLocalRandom.current().nextInt(0, 10));
+        posicion.setPartidosPerdidos(ThreadLocalRandom.current().nextInt(0, 10));
+        posicion.setPartidosEmpatados(ThreadLocalRandom.current().nextInt(0, 10));
+        posicion.setPuntos(ThreadLocalRandom.current().nextInt(0, 10));
+        return posicion;
     }
 }

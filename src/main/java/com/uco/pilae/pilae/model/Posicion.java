@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Posicion {
+    private Long codigo;
     private int partidosJugados;
     private int partidosGanados;
     private int partidosPerdidos;

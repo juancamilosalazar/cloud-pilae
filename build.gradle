@@ -1,7 +1,9 @@
 plugins {
     id 'org.springframework.boot' version '2.1.5.RELEASE'
     id 'java'
+    
 }
+
 
 apply plugin: 'io.spring.dependency-management'
 
@@ -35,6 +37,8 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-webflux', version: '5.1.8.RELEASE'
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
     compile  'org.flywaydb:flyway-core:5.2.4'
+    testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '5.1.6.RELEASE'
+
 
 
 }
