@@ -1,7 +1,6 @@
 package com.uco.pilae.pilae.controller;
 
 import com.uco.pilae.pilae.TestData.TestDataProviderController;
-import com.uco.pilae.pilae.model.Partido;
 import com.uco.pilae.pilae.model.Posicion;
 import com.uco.pilae.pilae.service.PosicionQueryService;
 import org.junit.Before;

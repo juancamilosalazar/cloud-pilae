@@ -2,12 +2,12 @@ package com.uco.pilae.pilae.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uco.pilae.pilae.TestData.TestDataProviderController;
+import com.uco.pilae.pilae.entity.PartidoEntity;
 import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
 import com.uco.pilae.pilae.model.Marcador;
 import com.uco.pilae.pilae.repository.PartidoRepository;
 import com.uco.pilae.pilae.service.MarcadorQueryService;
 import com.uco.pilae.pilae.util.DataConversionUtil;
-import org.assertj.core.error.OptionalShouldBeEmpty;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +36,7 @@ public class MarcadorControllerTest {
     @Before
     public void before() {
         base = new MarcadorController(queryService, new ModelMapper(), new DataConversionUtil(new ObjectMapper()), partidoRepository);
-        Mockito.when(partidoRepository.findById(anyLong())).thenReturn(TestDataProviderController.buildPartidoOptional());
+        Mockito.when(partidoRepository.findById(anyLong())).thenReturn(TestDataProviderController.buildPartidoOptionalEntity());
 
     }
 
@@ -65,12 +65,16 @@ public class MarcadorControllerTest {
     }
     @Test
     public void methodJugarPartidoException() throws Exception {
-        Mockito.when(partidoRepository.findById(anyLong())).thenReturn(Optional.empty());
+        Mockito.when(partidoRepository.findById(2L)).thenThrow(TestDataProviderController.buildNotFoundException());
         try {
             ResponseEntity<String> responseEntity = base.jugarPartido(TestDataProviderController.buildMarcador(), 2L);
-        }catch (Exception e){
-            assertTrue(e instanceof ResourceNotFoundException);
+        }catch (ResourceNotFoundException e){
+            assertEquals(e.getColumna(),"Codigo");
+            assertEquals(e.getValor(),2L);
+            assertEquals(e.getTabla(),"Marcador");
         }
 
     }
+
+
 }

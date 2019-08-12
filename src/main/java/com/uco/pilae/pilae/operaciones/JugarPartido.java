@@ -44,7 +44,7 @@ public class JugarPartido {
         posicionRepository.save(posicionEntityLocal);
     }
 
-    public void validateEquipoGanadorPosicion(PartidoEntity partido, int equipoLocal, int equipoVisitante, PosicionEntity posicionEntityLocal, PosicionEntity posicionEntityVisitante) {
+    private void validateEquipoGanadorPosicion(PartidoEntity partido, int equipoLocal, int equipoVisitante, PosicionEntity posicionEntityLocal, PosicionEntity posicionEntityVisitante) {
         if (equipoLocal > equipoVisitante) {
             posicionEntityLocal.setPartidosGanados(posicionEntityLocal.getPartidosGanados() + 1);
             posicionEntityVisitante.setPartidosPerdidos(posicionEntityVisitante.getPartidosPerdidos() + 1);
@@ -72,7 +72,7 @@ public class JugarPartido {
         return marcadorEntity;
     }
 
-    public void validateEquipoGanadorMarcador(PartidoEntity partido, int equipoLocal, int equipoVisitante, MarcadorEntity marcadorEntity) {
+    private void validateEquipoGanadorMarcador(PartidoEntity partido, int equipoLocal, int equipoVisitante, MarcadorEntity marcadorEntity) {
         if (equipoLocal > equipoVisitante)
             marcadorEntity.setEquipoGanador(partido.getFkEquipoLocal().getNombre());
         else if (equipoLocal == equipoVisitante)

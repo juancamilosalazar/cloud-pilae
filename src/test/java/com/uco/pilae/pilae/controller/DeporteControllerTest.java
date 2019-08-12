@@ -25,7 +25,7 @@ import static org.mockito.Matchers.any;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DeporteControllerTest {
 
-    protected DeporteController base;
+    private DeporteController base;
     @Mock
     DeporteQueryService queryService;
 

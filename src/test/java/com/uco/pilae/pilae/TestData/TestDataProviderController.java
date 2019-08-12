@@ -1,11 +1,10 @@
 package com.uco.pilae.pilae.TestData;
 
 import com.uco.pilae.pilae.entity.*;
+import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
 import com.uco.pilae.pilae.model.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -145,11 +144,8 @@ public class TestDataProviderController {
         return partidoEntity;
     }
 
-    private static Date buildDateRandom(final Long origin) {
-        return new Date(ThreadLocalRandom.current().nextLong(origin, System.currentTimeMillis()));
-    }
 
-    public static Optional<PartidoEntity> buildPartidoOptional() {
+    public static Optional<PartidoEntity> buildPartidoOptionalEntity() {
         final PartidoEntity partidoEntity = new PartidoEntity();
         partidoEntity.setIdaVuelta("vuelta");
         partidoEntity.setRonda("dgfasg");
@@ -216,19 +212,82 @@ public class TestDataProviderController {
                 .collect(Collectors.toList());
     }
 
-    private static PosicionEntity buildPosicionEntity() {
-        final PosicionEntity posicionEntity= new PosicionEntity();
+    public static PosicionEntity buildPosicionEntity() {
+        final PosicionEntity posicionEntity = new PosicionEntity();
+        posicionEntity.setCodigo(ThreadLocalRandom.current().nextLong(1, 50));
         posicionEntity.setFkEquipo(buildEquipoEntity());
         posicionEntity.setFkTorneo(buildTorneoEntity());
-        posicionEntity.setGolesContra(ThreadLocalRandom.current().nextInt(0,10));
-        posicionEntity.setGolesFavor(ThreadLocalRandom.current().nextInt(0,10));
-        posicionEntity.setGolesDiferencia(ThreadLocalRandom.current().nextInt(-10,10));
-        posicionEntity.setPartidosJugados(ThreadLocalRandom.current().nextInt(0,10));
-        posicionEntity.setPartidosGanados(ThreadLocalRandom.current().nextInt(0,10));
-        posicionEntity.setPartidosPerdidos(ThreadLocalRandom.current().nextInt(0,10));
-        posicionEntity.setPartidosEmpatados(ThreadLocalRandom.current().nextInt(0,10));
-        posicionEntity.setPuntos(ThreadLocalRandom.current().nextInt(0,10));
-        posicionEntity.setCodigo(ThreadLocalRandom.current().nextLong(1,50));
+        posicionEntity.setGolesContra(ThreadLocalRandom.current().nextInt(0, 10));
+        posicionEntity.setGolesFavor(ThreadLocalRandom.current().nextInt(0, 10));
+        posicionEntity.setGolesDiferencia(ThreadLocalRandom.current().nextInt(-10, 10));
+        posicionEntity.setPartidosJugados(ThreadLocalRandom.current().nextInt(0, 10));
+        posicionEntity.setPartidosGanados(ThreadLocalRandom.current().nextInt(0, 10));
+        posicionEntity.setPartidosPerdidos(ThreadLocalRandom.current().nextInt(0, 10));
+        posicionEntity.setPartidosEmpatados(ThreadLocalRandom.current().nextInt(0, 10));
+        posicionEntity.setPuntos(ThreadLocalRandom.current().nextInt(0, 10));
         return posicionEntity;
+    }
+
+    private static Date buildDateRandom(final Long origin) {
+        return new Date(ThreadLocalRandom.current().nextLong(origin, System.currentTimeMillis()));
+    }
+
+    public static HashMap<Integer, EquipoEntity> buildHashMapFixtureEquiposPar() {
+        HashMap<Integer, EquipoEntity> hashMap = new HashMap<>();
+        List<EquipoEntity> equipoEntityList = new ArrayList<>();
+        EquipoEntity equipoEntity1 = buildEquipoEntity();
+        EquipoEntity equipoEntity2 = buildEquipoEntity();
+        equipoEntityList.add(equipoEntity1);
+        equipoEntityList.add(equipoEntity2);
+        int idEquipo = 0;
+        for (EquipoEntity equipo : equipoEntityList) {
+            //para cada equipo le agrega un id que ayudara a generar el fixture
+            idEquipo++;
+            //inserta el equipo con el id generado para el fixture y el id
+            hashMap.put(idEquipo, equipo);
+        }
+        return hashMap;
+    }
+
+    public static HashMap<Integer, EquipoEntity> buildHashMapFixtureEquiposImpar() {
+        HashMap<Integer, EquipoEntity> hashMap = new HashMap<>();
+        List<EquipoEntity> equipoEntityList = new ArrayList<>();
+        EquipoEntity equipoEntity1 = buildEquipoEntity();
+        EquipoEntity equipoEntity2 = buildEquipoEntity();
+        EquipoEntity equipoEntity3 = buildEquipoEntity();
+        equipoEntityList.add(equipoEntity1);
+        equipoEntityList.add(equipoEntity2);
+        equipoEntityList.add(equipoEntity3);
+        int idEquipo = 0;
+        for (EquipoEntity equipo : equipoEntityList) {
+            //para cada equipo le agrega un id que ayudara a generar el fixture
+            idEquipo++;
+            //inserta el equipo con el id generado para el fixture y el id
+            hashMap.put(idEquipo, equipo);
+        }
+        return hashMap;
+    }
+
+    public static Optional<JugadorEntity> buildJugadorEntityOptional() {
+        JugadorEntity jugadorEntity = new JugadorEntity();
+        jugadorEntity.setFkEquipo(buildEquipoEntity());
+        jugadorEntity.setIdentificacion("2452354");
+        jugadorEntity.setId(ThreadLocalRandom.current().nextLong(0, 50));
+        jugadorEntity.setNombre("dasfasf");
+        jugadorEntity.setFechaNacimiento(buildDateRandom(915166800000L));
+        return Optional.of(jugadorEntity);
+    }
+
+    public static Optional<DeporteEntity> buildDeporteOptionalEntity() {
+        final DeporteEntity deporte = new DeporteEntity();
+        deporte.setNombre("adfasfd");
+        deporte.setCodigo(ThreadLocalRandom.current().nextLong(0, 50));
+        return Optional.of(deporte);
+    }
+
+    public static ResourceNotFoundException buildNotFoundException() {
+        ResourceNotFoundException exception;
+        exception = new ResourceNotFoundException("Marcador","Codigo",2L);
+        return exception;
     }
 }
