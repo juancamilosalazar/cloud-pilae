@@ -13,8 +13,8 @@ import java.util.List;
 @Service
 public class TorneoQueryServiceImpl implements TorneoQueryService {
 
-    final private TorneoRepository repository;
-    final private DeporteRepository deporteRepository;
+    private final TorneoRepository repository;
+    private final DeporteRepository deporteRepository;
 
     public TorneoQueryServiceImpl(TorneoRepository repository, DeporteRepository deporteRepository) {
         this.repository = repository;

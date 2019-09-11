@@ -2,7 +2,6 @@ package com.uco.pilae.pilae.controller;
 
 import com.uco.pilae.pilae.entity.TorneoEntity;
 import com.uco.pilae.pilae.model.Torneo;
-import com.uco.pilae.pilae.repository.TorneoRepository;
 import com.uco.pilae.pilae.service.TorneoQueryService;
 import com.uco.pilae.pilae.util.DataConversionUtil;
 import org.modelmapper.ModelMapper;

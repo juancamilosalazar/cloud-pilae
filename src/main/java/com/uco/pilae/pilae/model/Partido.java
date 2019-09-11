@@ -7,7 +7,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, doNotUseGetters = true)
+//@EqualsAndHashCode(onlyExplicitlyIncluded = true, doNotUseGetters = true)
 public class Partido implements java.io.Serializable {
     private Long codigo;
     private Equipo fkEquipoLocal;

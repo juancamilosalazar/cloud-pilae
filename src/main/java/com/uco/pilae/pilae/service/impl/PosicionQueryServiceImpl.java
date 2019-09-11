@@ -1,6 +1,7 @@
 package com.uco.pilae.pilae.service.impl;
 
 import com.uco.pilae.pilae.entity.PosicionEntity;
+import com.uco.pilae.pilae.model.Posicion;
 import com.uco.pilae.pilae.repository.PosicionRepository;
 import com.uco.pilae.pilae.service.PosicionQueryService;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,10 @@ public class PosicionQueryServiceImpl implements PosicionQueryService {
         return posiciones.stream()
                 .sorted(Comparator.comparing(PosicionEntity::getPuntos).thenComparing(PosicionEntity::getGolesDiferencia).reversed())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public PosicionEntity save(PosicionEntity posicion) {
+        return repository.saveAndFlush(posicion);
     }
 }

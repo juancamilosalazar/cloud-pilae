@@ -6,7 +6,6 @@ import com.uco.pilae.pilae.entity.PartidoEntity;
 import com.uco.pilae.pilae.entity.TorneoEntity;
 import com.uco.pilae.pilae.exceptions.ResourceNotFoundException;
 import com.uco.pilae.pilae.model.Partido;
-import com.uco.pilae.pilae.model.Torneo;
 import com.uco.pilae.pilae.repository.EquipoRepository;
 import com.uco.pilae.pilae.repository.TorneoRepository;
 import com.uco.pilae.pilae.service.FixtureQueryService;
@@ -46,7 +45,7 @@ public class PartidoController {
         List<EquipoEntity> equipos = equipoRepository.findByFkTorneo(torneo);
         return queryService.generateFixture(equipos, torneo)
                 .parallelStream()
-                .map(x->modelMapper.map(x,Partido.class))
+                .map(x -> modelMapper.map(x, Partido.class))
                 .collect(Collectors.toList());
     }
 
@@ -55,9 +54,9 @@ public class PartidoController {
         TorneoEntity torneo = torneoRepository.findById(torneoId).orElseThrow(() -> new ResourceNotFoundException("torneo_tbl", "torneo_tbl", torneoId));
         queryService.deleteByFkTorneo(torneo);
         List<EquipoEntity> equipos = equipoRepository.findByFkTorneo(torneo);
-       return queryService.generateFixtureNotReturn(equipos, torneo)
-               .parallelStream().map(x->modelMapper.map(x,Partido.class))
-               .collect(Collectors.toList());
+        return queryService.generateFixtureNotReturn(equipos, torneo)
+                .parallelStream().map(x -> modelMapper.map(x, Partido.class))
+                .collect(Collectors.toList());
     }
 
     @GetMapping(params = {"id"})
@@ -82,9 +81,10 @@ public class PartidoController {
                     .body(ex.getMessage());
         }
     }
+
     @PutMapping(params = {"id"})
-    public ResponseEntity<String> update(@RequestParam(value = "id") final Long id,@RequestBody Partido partido){
-        return buildResponse(queryService.update(id,partido));
+    public ResponseEntity<String> update(@RequestParam(value = "id") final Long id, @RequestBody Partido partido) {
+        return buildResponse(queryService.update(id, partido));
     }
 
     private ResponseEntity<String> buildResponse(final PartidoEntity entity) {

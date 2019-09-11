@@ -7,9 +7,9 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, doNotUseGetters = true)
+//@EqualsAndHashCode(onlyExplicitlyIncluded = true, doNotUseGetters = true)
 public class Deporte {
     private Long codigo;
-    @EqualsAndHashCode.Include
+    //@EqualsAndHashCode.Include
     private String nombre;
 }

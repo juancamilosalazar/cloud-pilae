@@ -3,10 +3,8 @@ package com.uco.pilae.pilae.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uco.pilae.pilae.TestData.TestDataProviderController;
 import com.uco.pilae.pilae.controller.DeporteController;
-import com.uco.pilae.pilae.controller.JugadorController;
 import com.uco.pilae.pilae.model.Deporte;
 import com.uco.pilae.pilae.service.DeporteQueryService;
-import com.uco.pilae.pilae.service.JugadorQueryService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,10 +31,12 @@ public class OktaOAuth2WebSecurityConfigurerAdapterTest {
     private MockMvc mockMvc;
     @InjectMocks
     private DeporteController base;
+    /*
     @InjectMocks
     private JugadorController baseJugador;
     @Mock
     private JugadorQueryService serviceJugador;
+    */
     @Mock
     private DeporteQueryService service;
 
@@ -54,6 +54,7 @@ public class OktaOAuth2WebSecurityConfigurerAdapterTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+
     /*
     @Test
     public void methodGetJugador() throws Exception {
@@ -66,13 +67,14 @@ public class OktaOAuth2WebSecurityConfigurerAdapterTest {
     }*/
     @Test
     public void methodPost() throws Exception {
-        mockMvc.perform( MockMvcRequestBuilders
+        mockMvc.perform(MockMvcRequestBuilders
                 .post("/employees")
                 .content(asJsonString(new Deporte(4L, "Basquet")))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
     }
+
     public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
